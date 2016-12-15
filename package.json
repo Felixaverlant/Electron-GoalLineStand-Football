@@ -1,0 +1,24 @@
+{
+  "name": "goallinestand",
+  "version": "1.0.0",
+  "description": "Electron GoalLineStand",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeLiftSleep/Electron-GoalLineStand-Football.git"
+  },
+  "author": "Matt Erman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CodeLiftSleep/Electron-GoalLineStand-Football/issues"
+  },
+  "homepage": "https://github.com/CodeLiftSleep/Electron-GoalLineStand-Football#readme",
+  "devDependencies": {
+    "gulp-jshint": "^2.0.4",
+    "gulp-sass": "^3.0.0",
+    "jshint-stylish": "^2.2.1"
+  }
+}

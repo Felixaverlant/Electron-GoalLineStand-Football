@@ -1,0 +1,29 @@
+
+
+
+        <form name="vm.form">
+            <wizard on-finish="vm.finishedWizard()" > 
+                <wz-step title="Step 1" canexit="vm.exitValidation(vm.forms.step1)" class="main-inner">
+                    <formly-form model="vm.model" fields="vm.fields.step1" form="vm.forms.step1">
+                    <button class="btn btn-primary btnSubmit" type="submit" ng-hide="vm.forms.step1.$valid" wz-next value="Continue" />
+                    </formly-form>
+                </wz-step>
+                <wz-step wz-title="Continuing">
+                    <h1>Continuing</h1>
+                    <p>You have continued here!</p>
+                    <input type="submit" wz-next value="Go on" />
+                </wz-step>
+                <wz-step wz-title="More steps">
+                    <p>Even more steps!!</p>
+                    <input type="submit" wz-next value="Finish now" />
+                </wz-step>  
+            </wizard>
+        </form>
+
+
+<!--<div>
+    <hr />
+    <pre>{{vm.model | json}}</pre>
+    <pre>{{vm.originalFields | json}}</pre>
+    <pre>{{vm.form | json}}</pre>
+</div>-->

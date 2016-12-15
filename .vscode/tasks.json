@@ -1,0 +1,8 @@
+{
+	"version": "0.1.0",
+	"command": "electron",
+	"isShellCommand": true,
+	"args": [
+		"app/main.js" //this should point to the location of your main.js file or the file you want to launch first
+	]
+}

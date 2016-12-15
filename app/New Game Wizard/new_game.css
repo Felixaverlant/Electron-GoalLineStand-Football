@@ -1,0 +1,32 @@
+.main-inner {
+    height: 500px;
+    border: 2px solid darkslategray;
+    border-radius: 5px;
+}
+.btn-sm {
+    width: 115px;
+}
+.career {
+    margin-top: 15px;
+    margin-right: 15px;
+    background: url('assets/GM_Career.png');
+    padding-top: 50px;
+    color: white;
+    vertical-align: bottom;
+    text-shadow: 5px 5px 5px black;
+    opacity: 0.55;
+    width: 165px;
+    
+}
+hr {
+    border-width: 1px;
+    border-color: darkslategray; 
+}
+h4 {
+    margin-top: 25px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.panel {
+    height: 600px;
+}

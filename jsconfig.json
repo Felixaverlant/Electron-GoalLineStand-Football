@@ -6,6 +6,9 @@
 		"module": "commonjs",
 		"allowSyntheticDefaultImports": true
 	},
+	"files": [
+		"src/"
+	],
 	"exclude": [
 		"node_modules",
 		"bower_components",

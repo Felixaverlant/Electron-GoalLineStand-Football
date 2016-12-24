@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/CodeLiftSleep/Electron-GoalLineStand-Football#readme",
   "devDependencies": {
+    "electron": "^1.4.12",
     "gulp-jshint": "^2.0.4",
     "gulp-sass": "^3.0.0",
     "jshint-stylish": "^2.2.1"

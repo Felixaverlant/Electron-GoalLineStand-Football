@@ -4,6 +4,7 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
+    "@lordfriend/nya-bootstrap-select": "^2.1.10",
     "angular-formly-templates-bootstrap": "^6.4.0",
     "angular-ui-router": "^0.3.2",
     "gulp": "^3.5.6",

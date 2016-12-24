@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
  childProcess = require('child_process'),
- electron = require('electron-prebuilt'),
+ electron = require('electron'),
  jshint = require('gulp-jshint'),
  gutil = require('gulp-util'),
  ts = require('gulp-typescript'),

@@ -41,6 +41,11 @@ angular
             templateUrl: 'New Game Wizard/Start/Start-career2.html'
         })
 
+        .state('Start.career3', {
+            url: '/career3',
+            templateUrl: 'New Game Wizard/Start/Start-career3.html'
+        })
+
         .state('Start.single', {
             parent: 'Start',
             url: '/single',

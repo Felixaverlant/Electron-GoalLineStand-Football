@@ -61,6 +61,8 @@ vm.fields = [
                 $scope.model.panelTitle6 = "Relocation Settings";
                 $scope.model.panelTitle7 = "Draft Settings";
                 $scope.model.panelTitle8 = "Financial Settings";
+                $scope.model.panelTitle9 = "Owner Settings";
+                $scope.model.panelTitle10 = "Player Contract Settings"
             }
         },
         }
@@ -1089,7 +1091,7 @@ vm.careerFinancials = [
     },
 
     {
-        template: '<div class="row" style="padding-bottom: 40px;"/>'
+        template: '<div class="row" style="padding-bottom: 10px;"/>'
     },
     {
         className: 'display-flex settings',
@@ -1196,6 +1198,67 @@ vm.careerFinancials = [
                 templateOptions: {
                     label: 'Team has right of 1st refusal?',
                     toggle: 'TransFR',
+                    selected: true
+                }
+            }
+        ]
+    }
+];
+
+vm.careerOwner = [
+    {
+        className: 'display-flex settings owner',
+        fieldGroup: [
+            {
+                key: 'AvgTicketPrice',
+                className: 'flex-1',
+                defaultValue: '85.00',
+                type: 'input',
+                templateOptions: {
+                    label: 'Average Ticket Price',
+                    type: 'text',
+                }
+            },
+            {
+                key: 'AvgLuxuryBoxPrice',
+                className: 'flex-1',
+                defaultValue: '35,000',
+                type: 'input',
+                templateOptions: {
+                    label: 'Ave Luxury Box Price',
+                    type: 'text'
+                }
+            },
+            {
+                key: 'HomeTeamGateRev',
+                className: 'flex-1',
+                type: 'vertSlider',
+                templateOptions: {
+                    label: 'Home Team Gate Revenue %',
+                    sliderOptions: {
+                        value: 60,
+                        floor: 0,
+                        ceil: 100
+                    }
+                }
+            },
+            {
+                key: 'ShareLuxBoxRev',
+                className: 'flex-1',
+                type: 'toggleSwitch',
+                templateOptions: {
+                    label: 'Share Luxury Box Rev?',
+                    toggle: 'LuxBox',
+                    selected: false
+                }
+            },
+            {
+                key: 'ShareMerchRev',
+                className: 'flex-1',
+                type: 'toggleSwitch',
+                templateOptions: {
+                    label: 'Share Merchandise Revenue?',
+                    toggle: 'MerchRev',
                     selected: true
                 }
             }

@@ -83,6 +83,10 @@ angular
                          rz-slider-options="to.sliderOptions"></rzslider>`].join(''),
             wrapper: ['bootstrapLabel', 'bootstrapHasError']
         },
+        {
+            name: '3DCarousel',
+            template: `<carousel ng-model="vm.carousel" sides="to.options"</carousel>`
+        }
 
         ])
 

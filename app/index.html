@@ -10,9 +10,9 @@
     <link rel="stylesheet" type="text/css" href="node_modules/nya-bootstrap-select/dist/css/nya-bs-select.css"/>
     <link rel="stylesheet" type="text/css" href="node_modules/normalize.css/normalize.css"/>
     <link rel="stylesheet" type="text/css" href="content/index.css"/>
-    <link rel="stylesheet" type="text/css" href="node_modules/angular-wizard/dist/angular-wizard.css"/>
     <link rel="stylesheet" type="text/css" href="New Game Wizard/new_game.css" />
     <link rel="stylesheet" type="text/css" href="node_modules/angularjs-slider/dist/rzslider.css"/>
+    <link rel="stylesheet" type="text/css" hred="content/3DCarousel.css"/>
 
      <script src="node_modules/api-check/dist/api-check.js"></script>
      <script src="node_modules/jquery/dist/jquery.js" onload="$ = jQuery = module.exports;"></script>
@@ -28,14 +28,14 @@
     <script src="node_modules/ngstorage/ngStorage.js"></script>
     <script src="node_modules/angular-ui-grid/ui-grid.js"></script>
     <script src="node_modules/lodash/lodash.js"></script>
+    <script src="node_modules/angular-3d-carousel/dist/angular-3d-carousel.js"></script>
     <script src="node_modules/angularjs-slider/dist/rzslider.js"></script>
     <script src="node_modules/restangular/dist/restangular.js"></script>
     <script src="node_modules/angular-ui-mask/dist/mask.js"></script>
     <script src="router.js"></script>
     <script src="New Game Wizard/new_game.js"></script>
+    <script src="New Game Wizard/Start/teamSelect.js"></script>
     <script src="formly_templates/formly_templates.js"></script>
-
- <title>Goal Line Stand Football</title>
 
  </head>
 
@@ -55,7 +55,7 @@
     
 </nav>
 <!-- MAIN CONTENT -->
-<div class="container">
+<div class="container"></div>
 
     <!-- THIS IS WHERE WE WILL INJECT OUR CONTENT ============================== -->
     <div ui-view></div>
@@ -68,10 +68,5 @@
 
 
  </body>
-
-  <script>
-    // You can also require other files to run in this process
-    require('./renderer.js')
-  </script>
 
 </html>

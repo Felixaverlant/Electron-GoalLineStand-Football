@@ -35,11 +35,53 @@ angular
         },
     ])
 })
+.controller('teamSelectCtrl', function teamSelectCtrl ($scope) {
+    var vm = this;
 
+    $scope.teamSelected = 'Arizona Cardinals'; //starts out at default team
+
+    vm.sides = [      
+        {image: 'New Game Wizard/assets/Arizona_Cardinals3.jpg', title: 'Arizona Cardinals', listItems: ['Offense Rating: 85', 'Defense Rating: 88', 'Special Teams Rating: 79']},
+        {image: 'New Game Wizard/assets/Atlanta_Falcons2.jpg', title: 'Atlanta Falcons', listItems: ['Offense Rating: 98', 'Defense Rating: 81', 'Special Teams Rating: 77']},
+        {image: 'New Game Wizard/assets/Baltimore-Ravens-3.jpg', title: 'Baltimore Ravens', listItems: ['Offense Rating: 78', 'Defense Rating: 95', 'Special Teams Rating: 83']},
+        {image: 'New Game Wizard/assets/Buffalo_Bills02.jpg', title: 'Buffalo Bills', listItems: ['Offense Rating: 88', 'Defense Rating: 82', 'Special Teams Rating: 83']},
+        {image: 'New Game Wizard/assets/Carolina_Panthers2.jpg', title: 'Carolina Panthers', listItems: ['Offense Rating: 83', 'Defense Rating: 86', 'Special Teams Rating: 82']},
+        {image: 'New Game Wizard/assets/Chicago-Bears-3.jpg', title: 'Chicago Bears', listItems: ['Offense Rating: 72', 'Defense Rating: 75', 'Special Teams Rating: 76']},
+        {image: 'New Game Wizard/assets/Cincinnati_Bengals3.jpg', title: 'Cincinnati Bengals', listItems: ['Offense Rating: 80', 'Defense Rating: 85', 'Special Teams Rating: 80']},
+        {image: 'New Game Wizard/assets/Cleveland_Browns2.jpg', title: 'Cleveland Browns', listItems: ['Offense Rating: 72', 'Defense Rating: 70', 'Special Teams Rating: 71']},
+        {image: 'New Game Wizard/assets/Dallas_Cowboys3.jpg', title: 'Dallas Cowboys', listItems: ['Offense Rating: 95', 'Defense Rating: 88', 'Special Teams Rating: 86']},
+        {image: 'New Game Wizard/assets/Denver_Broncos2.jpg', title: 'Denver Broncos', listItems: ['Offense Rating: 78', 'Defense Rating: 97', 'Special Teams Rating: 85']},
+        {image: 'New Game Wizard/assets/detroit-lions-3.jpg', title: 'Detroit Lions', listItems: ['Offense Rating: 86', 'Defense Rating: 84', 'Special Teams Rating: 82']},
+        {image: 'New Game Wizard/assets/Green_Bay_Packers5.jpg', title: 'Green Bay Packers', listItems: ['Offense Rating: 91', 'Defense Rating: 84', 'Special Teams Rating: 82']},
+        {image: 'New Game Wizard/assets/Houston_Texans2.jpg', title: 'Houston Texans', listItems: ['Offense Rating: 79', 'Defense Rating: 98', 'Special Teams Rating: 92']},
+        {image: 'New Game Wizard/assets/Indianapolis_Colts2.jpg', title: 'Indianapolis Colts', listItems: ['Offense Rating: 86', 'Defense Rating: 74', 'Special Teams Rating: 78']},
+        {image: 'New Game Wizard/assets/Jacksonville_Jaguars2.jpg', title: 'Jacksonville Jaguars', listItems: ['Offense Rating: 79', 'Defense Rating: 89', 'Special Teams Rating: 80']},
+        {image: 'New Game Wizard/assets/Kansas_City_Chiefs3.jpg', title: 'Kansas City Chiefs', listItems: ['Offense Rating: 84', 'Defense Rating: 92', 'Special Teams Rating: 90']},
+        {image: 'New Game Wizard/assets/LARams2.png', title: 'Los Angeles Rams', listItems: ['Offense Rating: 70', 'Defense Rating: 83', 'Special Teams Rating: 75']},
+        {image: 'New Game Wizard/assets/Miami_Dolphins2.jpg', title: 'Miami Dolphins', listItems: ['Offense Rating: 86', 'Defense Rating: 85', 'Special Teams Rating: 85']},
+        {image: 'New Game Wizard/assets/Minnesota_Vikings_2013_06.jpg', title: 'Minnesota Vikings', listItems: ['Offense Rating: 79', 'Defense Rating: 88', 'Special Teams Rating: 82']},
+        {image: 'New Game Wizard/assets/New_England_Patriots2.jpg', title: 'New England Patriots', listItems: ['Offense Rating: 98', 'Defense Rating: 89', 'Special Teams Rating: 92']},
+        {image: 'New Game Wizard/assets/New_Orleans_Saints2.jpg', title: 'New Orleans Saints', listItems: ['Offense Rating: 98', 'Defense Rating: 70', 'Special Teams Rating: 72']},
+        {image: 'New Game Wizard/assets/New_York_Giants5.jpg', title: 'New York Giants', listItems: ['Offense Rating: 86', 'Defense Rating: 85', 'Special Teams Rating: 83']},
+        {image: 'New Game Wizard/assets/New_York_Jets2.jpg', title: 'New York Jets', listItems: ['Offense Rating: 73', 'Defense Rating: 75', 'Special Teams Rating: 75']},
+        {image: 'New Game Wizard/assets/Oakland_Raiders2.jpg', title: 'Oakland Raiders', listItems: ['Offense Rating: 94', 'Defense Rating: 74', 'Special Teams Rating: 86']},
+        {image: 'New Game Wizard/assets/Philadelphia_Eagles2.jpg', title: 'Philadelphia Eagles', listItems: ['Offense Rating: 80', 'Defense Rating: 89', 'Special Teams Rating: 84']},
+        {image: 'New Game Wizard/assets/Pittsburgh_Steelers2.jpg', title: 'Pittsburgh Steelers', listItems: ['Offense Rating: 88', 'Defense Rating: 84', 'Special Teams Rating: 84']},
+        {image: 'New Game Wizard/assets/San_Diego_Chargers5.jpg', title: 'San Diego Chargers', listItems: ['Offense Rating: 89', 'Defense Rating: 82', 'Special Teams Rating: 82']},
+        {image: 'New Game Wizard/assets/San_Francisco_49ers04.jpg', title: 'San Francisco 49ers', listItems: ['Offense Rating: 73', 'Defense Rating: 70', 'Special Teams Rating: 71']},
+        {image: 'New Game Wizard/assets/Seattle_Seahawks2_2012.jpg', title: 'Seattle Seahawks', listItems: ['Offense Rating: 84', 'Defense Rating: 93', 'Special Teams Rating: 86']},
+        {image: 'New Game Wizard/assets/Tampa_Bay_Buccaneers2.jpg', title: 'Tampa Bay Buccaneers', listItems: ['Offense Rating: 84', 'Defense Rating: 88', 'Special Teams Rating: 83']},
+        {image: 'New Game Wizard/assets/Tennessee_Titans2.jpg', title: 'Tennessee Titans', listItems: ['Offense Rating: 89', 'Defense Rating: 84', 'Special Teams Rating: 81']},
+        {image: 'New Game Wizard/assets/Washington_Redskins2.jpg', title: 'Washington Redskins', listItems: ['Offense Rating: 91', 'Defense Rating: 83', 'Special Teams Rating: 85']},
+       
+    ]       
+
+    console.log($scope);    
+
+})
 .controller('newGameCtrl', function newGameCtrl() {
 var vm = this;
-vm.model = {
-};
+vm.model = {};
 
 vm.fields = [
         {
@@ -1264,7 +1306,8 @@ vm.careerOwner = [
             }
         ]
     }
-]
+];
+
               
 });
 })();

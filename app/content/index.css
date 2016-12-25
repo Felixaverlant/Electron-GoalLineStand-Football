@@ -1,9 +1,10 @@
-h2 {
+section h2 {
     position: fixed;
     color: White;
     font-weight: bold;
     font-size: 48px;
     left: 40%;
+    top: 10%;
 }
 
 .start {

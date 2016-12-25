@@ -5,7 +5,8 @@
     'use strict';
 angular
 .module('routerApp', ['ui.router','formly', 'formlyBootstrap', 'ui.bootstrap', 'ngMessages', 
-'ngAnimate', 'ngStorage', 'ui.grid', 'restangular', 'formly templates', 'nya.bootstrap.select', 'rzModule', 'ui.mask'])
+'ngAnimate', 'ngStorage', 'ui.grid', 'restangular', 'formly templates', 'nya.bootstrap.select', 
+'rzModule', 'ui.mask', 'angular-3d-carousel'])
 .config(function(formlyConfigProvider) {
     formlyConfigProvider.setType([
                 
@@ -44,6 +45,13 @@ angular
         .state('Start.career3', {
             url: '/career3',
             templateUrl: 'New Game Wizard/Start/Start-career3.html'
+        })
+        //Team Selection screen
+        .state('Start.teamSelect', {
+            url: '/teamSelect',
+            templateUrl: 'New Game Wizard/Start/Start-teamSelect.html',
+            controller: 'teamSelectCtrl',
+            controllerAs: 'vm'
         })
 
         .state('Start.single', {

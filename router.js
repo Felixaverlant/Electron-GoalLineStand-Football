@@ -5,7 +5,25 @@
     'use strict';
 angular
 .module('routerApp', ['ui.router','formly', 'formlyBootstrap', 'ui.bootstrap', 'ngMessages', 
-'ngAnimate', 'ngStorage', 'ui.grid', 'restangular', 'formly templates', 'nya.bootstrap.select', 'rzModule', 'ui.mask'])
+'ngAnimate', 'ngStorage', 'ui.grid', 'restangular', 'formly templates', 'nya.bootstrap.select', 
+'rzModule', 'ui.mask'])
+.constant('db', function() {
+    //declare the main db and load it for use at anytime throughout the program
+    var fs = require('fs');
+    var sql = require('sql.js');
+    var filebuffer = fs.readFileSync('app/assets/football.sqlite');
+    var db = new sql.Database(filebuffer);
+    return { //return each table---useage: db.Agents
+        Agents: db.exec('SELECT * FROM Agents'),
+        Coaches: db.exec('SELECT * FROM Coaches'),
+        DraftPlayers: db.exec('SELECT * FROM DraftPlayers'),
+        Owners: db.exec('SELECT * FROM Owners'),
+        Personnel: db.exec('SELECT * FROM Personnel'),
+        RosterPlayers: db.exec('SELECT * FROM RosterPlayers'),
+        Teams: db.exec('SELECT * FROM Teams'),
+        Trainers: db.exec('SELECT * FROM Trainers')
+    };
+})
 .config(function(formlyConfigProvider) {
     formlyConfigProvider.setType([
                 

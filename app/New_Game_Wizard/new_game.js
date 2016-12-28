@@ -35,21 +35,10 @@ angular
         },
     ])
 })
-.controller('teamSelectCtrl', ['$scope', '$stateParams', 'DB', '$uibModal',
-function teamSelectCtrl ($scope, $stateParams, DB, $uibModal) {
+.controller('teamSelectCtrl', ['$scope', '$stateParams', '$uibModal', 'DB',
+function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
     var vm = this;
-
-    /* SQLite implementation---
-    var fs = require('fs');
-    var sql = require('sql.js');
-    var filebuffer = fs.readFileSync('app/assets/football.sqlite');
-
-    var db = new sql.Database(filebuffer);
-    var contents = db.exec("SELECT * FROM Personnel WHERE PersonnelType = 10");
-
-    //console.log(`this is from the Personnel table: ${contents[0].values}`);
-*/
-    console.log(DB.Teams);
+    console.log(DB.load.data);
     //TODO: load this from SQL lite service
     $scope.teamSelected = 'Arizona Cardinals'; //starts out as default team
     $scope.teamId = 29; //default ID for Arizona
@@ -62,14 +51,14 @@ function teamSelectCtrl ($scope, $stateParams, DB, $uibModal) {
         var roster = [];
         var modalInstance = $uibModal.open({
 
-            template: `<div class="modal">
-                            <div class="modal-header">
-                                <h3 class="modal-title" id="modal-title">{{teamSelected}} Roster</h3>
+            template: `     
+                            <div class="modal-header" >
+                                <h3 class="modal-title" id="modal-title" style="width: 900px;">{{teamSelected}} Roster</h3>
                             </div>
-                            <div class="modal-body" id="modal-body">
-                                <div id="grid1" ui-grid="gridOptions" class="grid" style="height: 100%, width: 100%; display: block;"></div>
+                            <div class="modal-body" id="modal-body" style="width: 900px;">
+                                <div id="grid1" ui-grid="gridOptions" class="grid" style="width: 100%"></div>
                             </div>
-                       </div>`,
+                       `,
             controller: function($rootScope, $scope, $interval) {
                 var grid;
                 //$scope.hideGrid = true;
@@ -108,7 +97,8 @@ function teamSelectCtrl ($scope, $stateParams, DB, $uibModal) {
                     };
                 });
                } 
-            }   
+            },
+            size: 'lg'  
         })
     }
 

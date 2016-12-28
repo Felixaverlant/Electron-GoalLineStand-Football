@@ -35,6 +35,6 @@ section h2 {
     i { line-height: 3.5em;}
 }
 
-.progress-bar {
+.progress {
     transition: width 1s ease-in-out;
 }

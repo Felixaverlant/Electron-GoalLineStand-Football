@@ -4,53 +4,82 @@
 (function () {
     'use strict';
 angular
-.module('routerApp', ['ui.router','formly', 'formlyBootstrap', 'ui.bootstrap', 'ngMessages', 
-'ngAnimate', 'ngStorage', 'ui.grid', 'restangular', 'formly templates', 'nya.bootstrap.select', 
-'rzModule', 'ui.mask', 'angular-3d-carousel', 'countTo', 'ui.grid.autoResize'])
-/*.controller('progressBar', function progressBar($scope, $timeout) {
-   
-    var amt = 100;
-    $scope.countTo = amt;
-    $scope.countFrom = 0;
+.module('routerApp', ['ui.router','formly', 'formlyBootstrap', 'ngAnimate', 'ui.bootstrap', 'ngMessages', 
+ 'ngStorage', 'ui.grid', 'restangular', 'formly templates', 'nya.bootstrap.select', 
+'rzModule', 'ui.mask', 'angular-3d-carousel', 'ui.grid.autoResize'])
 
-    $timeout(function() {
-        $scope.progressValue = amt;
-    }, 700);
-})*/
-.constant('DB', (function() {
-    //declare the main db and load it for use at anytime throughout the program
-    var fs = require('fs');
-    var sql = require('sql.js');
-    var filebuffer = fs.readFileSync('app/assets/football.sqlite');
-    var db = new sql.Database(filebuffer);
-    var agentTemp = db.prepare('SELECT * FROM Agents');
-    for(var agents = []; agentTemp.step();) agents.push(agentTemp.getAsObject());
-    var coachTemp = db.prepare('SELECT * FROM Coaches');
-    for(var coaches = []; coachTemp.step();) coaches.push(coachTemp.getAsObject()); 
-    var draftTemp = db.prepare('SELECT * FROM DraftPlayers');
-    for(var draftPlayers = []; draftTemp.step();) draftPlayers.push(draftTemp.getAsObject());
-    var ownerTemp = db.prepare('SELECT * FROM Owners');
-    for(var owners = []; ownerTemp.step();) owners.push(ownerTemp.getAsObject());   
-    var personnelTemp = db.prepare('SELECT * FROM Personnel');
-    for(var personnel = []; personnelTemp.step();) personnel.push(personnelTemp.getAsObject()); 
-    var rosterTemp = db.prepare('SELECT * FROM RosterPlayers');
-    for(var rosterPlayers = []; rosterTemp.step();) rosterPlayers.push(rosterTemp.getAsObject());
-    var teamTemp = db.prepare('SELECT * FROM Teams ORDER BY TeamName');
-    for(var teams = []; teamTemp.step();) teams.push(teamTemp.getAsObject());
-    var trainerTemp = db.prepare('SELECT * FROM TRAINERS');
-    for(var trainers = []; trainerTemp.step();) trainers.push(trainerTemp.getAsObject());
-
-    return { //return each table---useage: db.Agents
-        Agents: agents,
-        Coaches: coaches,
-        DraftPlayers: draftPlayers,
-        Owners: owners,
-        Personnel: personnel,
-        RosterPlayers: rosterPlayers,
-        Teams: teams,
-        Trainers: trainers
+.service('DB', function() {
+    this.load = {
+        isLoading: false,
+        data: []
     };
-})())
+
+    this.setIsLoading = function(value) {
+        this.load.isLoading = value;
+    };
+
+    this.setData = function(data) {
+        this.load.data = data;
+    };
+})
+
+.service('dataService', ['$timeout', '$q', function($timeout, $q) {
+    this.getData = function() {
+        var defer = $q.defer();
+        $timeout(function() {
+                var fs = require('fs');
+                var sql = require('sql.js');
+                var filebuffer = fs.readFileSync('app/assets/football.sqlite');
+                var db = new sql.Database(filebuffer);
+                var agentTemp = db.prepare('SELECT * FROM Agents');
+                for(var agents = []; agentTemp.step();) agents.push(agentTemp.getAsObject());
+                var coachTemp = db.prepare('SELECT * FROM Coaches');
+                for(var coaches = []; coachTemp.step();) coaches.push(coachTemp.getAsObject()); 
+                var draftTemp = db.prepare('SELECT * FROM DraftPlayers');
+                for(var draftPlayers = []; draftTemp.step();) draftPlayers.push(draftTemp.getAsObject());
+                var ownerTemp = db.prepare('SELECT * FROM Owners');
+                for(var owners = []; ownerTemp.step();) owners.push(ownerTemp.getAsObject());   
+                var personnelTemp = db.prepare('SELECT * FROM Personnel');
+                for(var personnel = []; personnelTemp.step();) personnel.push(personnelTemp.getAsObject()); 
+                var rosterTemp = db.prepare('SELECT * FROM RosterPlayers');
+                for(var rosterPlayers = []; rosterTemp.step();) rosterPlayers.push(rosterTemp.getAsObject());
+                var teamTemp = db.prepare('SELECT * FROM Teams ORDER BY TeamName');
+                for(var teams = []; teamTemp.step();) teams.push(teamTemp.getAsObject());
+                var trainerTemp = db.prepare('SELECT * FROM TRAINERS');
+                for(var trainers = []; trainerTemp.step();) trainers.push(trainerTemp.getAsObject());
+                var DB = {};
+                DB.Agents = agents;
+                DB.Coaches = coaches;
+                DB.DraftPlayers = draftPlayers;
+                DB.Owners = owners;
+                DB.Personnel = personnel;
+                DB.RosterPlayers = rosterPlayers,
+                DB.Teams = teams;
+                DB.Trainers = trainers;
+                defer.resolve(DB);
+        }, 0);
+        return defer.promise;
+    };
+}])
+
+.run(function(DB, dataService) {
+    DB.setIsLoading(true),
+    dataService.getData().then(function(data) {
+        DB.setData(data);
+        DB.setIsLoading(false);
+    });
+})
+
+.controller('loadCtrl', [ "$scope", "$interval", "DB", function loadCtrl($scope, $interval, DB) {
+        
+       $scope.appState =  DB.load;    
+        $scope.interval = 50;
+
+            $interval(function() {
+            $scope.interval = ($scope.interval + 1);
+            },1000);
+
+}])
 
 .config(function(formlyConfigProvider) {
     formlyConfigProvider.setType([

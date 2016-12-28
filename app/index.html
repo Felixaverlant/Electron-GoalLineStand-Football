@@ -12,7 +12,8 @@
     <link rel="stylesheet" type="text/css" href="content/index.css"/>
     <link rel="stylesheet" type="text/css" href="New_Game_Wizard/new_game.css" />
     <link rel="stylesheet" type="text/css" href="node_modules/angularjs-slider/dist/rzslider.css"/>
-    <link rel="stylesheet" type="text/css" hred="content/3DCarousel.css"/>
+    <link rel="stylesheet" type="text/css" href="content/3DCarousel.css"/>
+    <link rel="stylesheet" type="text/css" href="content/UI-grid.css"/>
 
      <script src="node_modules/api-check/dist/api-check.js"></script>
      <script src="node_modules/jquery/dist/jquery.js" onload="$ = jQuery = module.exports;"></script>
@@ -32,7 +33,6 @@
     <script src="node_modules/angularjs-slider/dist/rzslider.js"></script>
     <script src="node_modules/restangular/dist/restangular.js"></script>
     <script src="node_modules/angular-ui-mask/dist/mask.js"></script>
-    <script src="node_modules/angular-count-to/build/angular-count-to.min.js"></script>
     <script src="router.js"></script>
     <script src="New_Game_Wizard/new_game.js"></script>
     <script src="New_Game_Wizard/Start/teamSelect.js"></script>
@@ -45,27 +45,34 @@
 
  <!-- NAVIGATION -->
  <nav class="navbar navbar-inverse" role="navigation">
-    <div class="navbar-header">
+    <div class="navbar-header"></div>
         <a class="navbar-brand" ui-sref="#">Goal Line Stand Football</a>
     </div>
-    <ul class="nav navbar-nav">
+    <ul class="nav navbar-nav"></ul>
         <li><a ui-sref="home">Home</a></li>
         <li><a ui-sref="settings">Settings</a></li>
         <li><a ui-sref="menu">Menu</a></li>
-    </ul>
-    
+    </ul>    
 </nav>
 <!-- MAIN CONTENT -->
 <div class="container"></div>
 
     <!-- THIS IS WHERE WE WILL INJECT OUR CONTENT ============================== -->
-    <div ui-view></div>
-    <!--<div ng-controller="progressBar">
-        <uib-progress class="progress-striped progress active" animate="true" max="100" value="progressValue" type="success"
-        title="Please wait...Goal Line Stand is Loading...">
-            <i><span count-to="{{countTo}}" duration="2" count-from="{{countFrom}}"></span>/ 100</i>
-        </uib-progress>
-    </div>-->
+    
+    <div ng-controller="loadCtrl as $ctrl">
+        <div ng-show="appState.isLoading">
+            <h1 style="top: 15%; left: 25%">Loading data...</h1>
+            <div class="col-sm-4">
+                <progress value="{{interval}}" max="100" class="progress" type="success" animate="true"></progress>
+            </div>
+        </div>
+    </div>
+            
+        <div ng-show="!appState.isLoading">         
+            <div ui-view></div>
+        </div>
+
+    
 <!--<h3>current state name: <var>{{$state.current.name}}</var></h3>
  <h5>params</h5>
   <pre>{{$stateParams | json}}</pre>

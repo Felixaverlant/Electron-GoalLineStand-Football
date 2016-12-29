@@ -63,6 +63,17 @@ h1 {
   right: 0;
   margin: auto;
 }
+.modal-dialog {
+  width: 80%;
+}
+
+.modal-body {
+  width: 100% !important;
+}
+
+.ui-grid {
+  width: 100%;
+}
 .viewRoster {
   margin-top: 32%;
   margin-left: 25%;

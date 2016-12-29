@@ -37,8 +37,9 @@ angular
 })
 .controller('teamSelectCtrl', ['$scope', '$stateParams', '$uibModal', 'DB',
 function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
+
+    //DB is the database service object holding all the tables
     var vm = this;
-    console.log(DB.load.data);
     //TODO: load this from SQL lite service
     $scope.teamSelected = 'Arizona Cardinals'; //starts out as default team
     $scope.teamId = 29; //default ID for Arizona
@@ -53,27 +54,27 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
 
             template: `     
                             <div class="modal-header" >
-                                <h3 class="modal-title" id="modal-title" style="width: 900px;">{{teamSelected}} Roster</h3>
+                                <h3 class="modal-title" id="modal-title">{{teamSelected}} Roster</h3>
                             </div>
-                            <div class="modal-body" id="modal-body" style="width: 900px;">
-                                <div id="grid1" ui-grid="gridOptions" class="grid" style="width: 100%"></div>
+                            <div class="modal-body" id="modal-body">
+                                <div id="grid1" ui-grid="gridOptions" class="grid"></div>
                             </div>
                        `,
             controller: function($rootScope, $scope, $interval) {
-                var grid;
+                //var grid;
                 //$scope.hideGrid = true;
                 $scope.gridOptions = {
                     onRegisterApi: function(gridApi) {
                         $scope.gridApi = gridApi;
-
-                        $interval( function () {
+                        
+                        $interval(function () {
                             $scope.gridApi.core.handleWindowResize();
                         }, 500, 10);
                     },
                     enableSorting: true,
                     columnDefs: [
-                        {name: 'FName', width: '15%'},
-                        {name: 'LName', width: '15%'},
+                        {name: 'FName', displayName: 'First Name', width: '15%'},
+                        {name: 'LName', displayame: 'Last Name', width: '15%'},
                         {name: 'College', width: '15%'},
                         {name: 'Age', width: '6%'},
                         {name: 'Height', width: '6%'},
@@ -89,7 +90,7 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
             },
             resolve: {
                roster: function() {
-                   return angular.forEach(DB.RosterPlayers, function(value, key) {
+                   return angular.forEach(DB.load.data.RosterPlayers, function(value, key) {
                     if(value.TeamID === teamId) {
                         roster.push({FName: value.FName, LName: value.LName, College: value.College, Age: value.Age,
                         Height: value.Height, Weight: value.Weight, ArmLength: value. ArmLength, HandSize: value.HandLength,
@@ -105,7 +106,7 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
 vm.sides = [];
   
   //load the teams from the DB.Teams object
-    angular.forEach(DB.Teams, function(value, key) {
+    angular.forEach(DB.load.data.Teams, function(value, key) {
         vm.sides.push({image: value.TeamLogoPath, teamID: value.TeamID, title: value.TeamName + ' ' + value.TeamNickname, 
         listItems: ['Offense Rating: 85', 'Defense Rating: 88', 'Special Teams Rating: 79']});
     });

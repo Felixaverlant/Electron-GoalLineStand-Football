@@ -8,13 +8,14 @@
     
     <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="node_modules/nya-bootstrap-select/dist/css/nya-bs-select.css"/>
-    <link rel="stylesheet" type="text/css" href="node_modules/normalize.css/normalize.css"/>
-    <link rel="stylesheet" type="text/css" href="content/index.css"/>
-    <link rel="stylesheet" type="text/css" href="New_Game_Wizard/new_game.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/normalize.css/normalize.css"/>   
     <link rel="stylesheet" type="text/css" href="node_modules/angularjs-slider/dist/rzslider.css"/>
     <link rel="stylesheet" type="text/css" href="content/3DCarousel.css"/>
     <link rel="stylesheet" type="text/css" href="content/UI-grid.css"/>
-
+    <link rel="stylesheet" type="text/css" href="content/index.css"/>
+    <link rel="stylesheet" type="text/css" href="New_Game_Wizard/new_game.css" />
+    
+    
      <script src="node_modules/api-check/dist/api-check.js"></script>
      <script src="node_modules/jquery/dist/jquery.js" onload="$ = jQuery = module.exports;"></script>
     <script src="node_modules/angular/angular.js"></script>
@@ -61,9 +62,12 @@
     
     <div ng-controller="loadCtrl as $ctrl">
         <div ng-show="appState.isLoading">
-            <h1 style="top: 15%; left: 25%">Loading data...</h1>
-            <div class="col-sm-4">
-                <progress value="{{interval}}" max="100" class="progress" type="success" animate="true"></progress>
+            <span class="title col-md-11 pull-right" style="color: white; font-size: 42px; margin-bottom: 20px;">
+                Please Wait...Goal Line Stand is Loading...</span>
+            <div class="spinner">                
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
             </div>
         </div>
     </div>

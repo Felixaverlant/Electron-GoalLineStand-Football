@@ -43,5 +43,6 @@
         "consistent-this": [1, "_this"],
         "func-names": 1
     },
-    "extends": "C:\\MicrosoftVSCode\\Projects\\GoalLineStand\\app\\node_modules\\eslint-plugin-angular\\.editorconfig"
+    //"extends": "C:\\MicrosoftVSCode\\Projects\\GoalLineStand\\app\\node_modules\\eslint-plugin-angular\\.editorconfig"
+    "extends" : "angular"
 }

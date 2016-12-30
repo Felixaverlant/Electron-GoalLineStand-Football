@@ -1,4 +1,4 @@
-section h2 {
+h2 {
     position: fixed;
     color: White;
     font-weight: bold;
@@ -30,6 +30,21 @@ section h2 {
     left: 50%;
     height: 50px;
     width: 135px;
+}
+
+.fadein,
+.fadeout {
+  transition:all linear 1.5s;
+}
+
+.fadein.ng-hide-remove,
+.fadeout.ng-hide-add.ng-hide-add-active {
+  opacity: 0;
+}
+
+.fadeout.ng-hide-add,
+.fadein.ng-hide-remove.ng-hide-remove-active {
+  opacity: 1;
 }
 
 .spinner {

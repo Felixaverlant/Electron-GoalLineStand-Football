@@ -85,7 +85,7 @@ width: 100%;
 /* basic styling for entering and leaving */
 /* left and right added to ensure full width */
 #form-views.ng-enter,
-#form-views.ng-leave      { position:absolute; left:30px; right:30px;
+#form-views.ng-leave      { position:absolute; left:20px; right:20px;
     transition:0.8s all ease; -moz-transition:0.8s all ease; -webkit-transition:0.8s all ease; 
 }
     
@@ -128,21 +128,6 @@ width: 100%;
 @-webkit-keyframes slideInRight {
     from    { -webkit-transform:translateX(200%); }
     to      { -webkit-transform: translateX(0); }
-}
-
-.animate-show {
-   display:block!important;
-  opacity: 1;
-}
-
-.animate-show.ng-hide-add, .animate-show.ng-hide-remove {
-  transition: all linear 3.0s;
-}
-
-.animate-show.ng-hide {
-  line-height: 0;
-  opacity: 0;
-  padding: 0 10px;
 }
 
 .check-element {

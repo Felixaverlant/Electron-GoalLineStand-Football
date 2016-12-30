@@ -70,15 +70,8 @@ angular
     });
 })
 
-.controller('loadCtrl', [ "$scope", "$interval", "DB", function loadCtrl($scope, $interval, DB) {
-        
-       $scope.appState =  DB.load;    
-        $scope.interval = 50;
-
-            $interval(function() {
-            $scope.interval = ($scope.interval + 1);
-            },1000);
-
+.controller('loadCtrl', [ "$scope", "DB", function loadCtrl($scope, DB) {
+        $scope.appState =  DB.load;    
 }])
 
 .config(function(formlyConfigProvider) {

@@ -6,9 +6,11 @@ span {
 }
 
 #carousel figure h2 {
+  position: relative;
   font-size: 3.50vw;
   line-height: 4vw;
   margin: 0;
+  left: 0;
   margin-top: -10%;
   margin-bottom: 35%;
   color: gainsboro;

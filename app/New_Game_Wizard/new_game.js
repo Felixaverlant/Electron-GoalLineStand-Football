@@ -40,29 +40,35 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
 
     //DB is the database service object holding all the tables
     var vm = this;
-    //TODO: load this from SQL lite service
-    $scope.teamSelected = 'Arizona Cardinals'; //starts out as default team
-    $scope.teamId = 29; //default ID for Arizona
+    vm.teamSelected = 'Arizona Cardinals'; //starts out as default team
+    vm.teamId = 29; //default ID for Arizona
     vm.model = $stateParams.model; //retrieves the model passed in by the state
-
+    
     vm.model.teamSelected = $scope.teamSelected;
-
+    
 //opens the roster of this team, loaded via sqlite;
-    $scope.ViewRoster = function(teamSelected, teamId) {
+    vm.ViewRoster = function(teamSelected, teamId) {
         var roster = [];
         var modalInstance = $uibModal.open({
-
             template: `     
-                            <div class="modal-header" >
+                            <div class="modal-header" ng-style="teamPri">
                                 <h3 class="modal-title" id="modal-title">{{teamSelected}} Roster</h3>
                             </div>
-                            <div class="modal-body" id="modal-body">
+                            <div class="modal-body" id="modal-body" ng-style="teamSec">
                                 <div id="grid1" ui-grid="gridOptions" class="grid"></div>
                             </div>
+                            <div class="modal-footer" ng-style="teamTer">
+                                <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+                            </div>
                        `,
-            controller: function($rootScope, $scope, $interval) {
+            controller: function ($scope, $uibModalInstance, $interval, $filter) {
                 //var grid;
-                //$scope.hideGrid = true;
+                $scope.teamSelected = teamSelected;
+                $scope.team = $filter('filter')(DB.load.data.Teams, {TeamID: teamId}, true)[0];
+                $scope.teamPri = {'background-color': $scope.team.MainColor, 'color': $scope.team.TrimColor};
+                $scope.teamSec = {'background-color': $scope.team.SecondaryColor};
+                $scope.teamTer = {'background-color': $scope.team.TrimColor};
+
                 $scope.gridOptions = {
                     onRegisterApi: function(gridApi) {
                         $scope.gridApi = gridApi;
@@ -74,7 +80,7 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
                     enableSorting: true,
                     columnDefs: [
                         {name: 'FName', displayName: 'First Name', width: '15%'},
-                        {name: 'LName', displayame: 'Last Name', width: '15%'},
+                        {name: 'LName', displayName: 'Last Name', width: '15%'},
                         {name: 'College', width: '15%'},
                         {name: 'Age', width: '6%'},
                         {name: 'Height', width: '6%'},
@@ -85,23 +91,32 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
                         {name: 'PosType', displayName: 'Position Type', width: '15%'}
                     ]
                 };
-                              
+                $scope.ok = function () {
+                    $uibModalInstance.close();
+                };          
                 $scope.gridOptions.data = roster;
             },
             resolve: {
                roster: function() {
                    return angular.forEach(DB.load.data.RosterPlayers, function(value, key) {
-                    if(value.TeamID === teamId) {
+                    if(value.TeamID === teamId) 
                         roster.push({FName: value.FName, LName: value.LName, College: value.College, Age: value.Age,
                         Height: value.Height, Weight: value.Weight, ArmLength: value. ArmLength, HandSize: value.HandLength,
-                        Pos: value.Pos, PosType: value.PosType});
-                    };
+                        Pos: value.Pos, PosType: value.PosType});                
                 });
                } 
             },
             size: 'lg'  
-        })
-    }
+        });
+
+        modalInstance.result.then(function(response) {
+            $scope.team = undefined;
+        });
+    };
+
+    vm.TeamOptions = function(teamSelected, teamId) {
+
+    };
 
 vm.sides = [];
   

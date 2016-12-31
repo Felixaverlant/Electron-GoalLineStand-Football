@@ -8,7 +8,7 @@ angular
  'ngStorage', 'ui.grid', 'restangular', 'formly templates', 'nya.bootstrap.select', 
 'rzModule', 'ui.mask', 'angular-3d-carousel', 'ui.grid.autoResize'])
 
-.service('DB', function() {
+.service('DB', function($q) {
     this.load = {
         isLoading: false,
         data: []
@@ -21,9 +21,23 @@ angular
     this.setData = function(data) {
         this.load.data = data;
     };
+
+    this.getNumEnding = function(number) {
+        var defer = $q.defer();
+        var num = number.toString();
+        var result = '';
+        switch (num[num.length-1]) { //gets the last digit of the number
+            case '1' : result = 'st'; break;
+            case '2' : result = 'nd'; break;
+            case '3' : result = 'rd'; break;
+            default  : result = 'th';
+        };
+        defer.resolve(result);
+    };
 })
 
 .service('dataService', ['$timeout', '$q', function($timeout, $q) {
+
     this.getData = function() {
         var defer = $q.defer();
         $timeout(function() {
@@ -47,6 +61,7 @@ angular
                 for(var teams = []; teamTemp.step();) teams.push(teamTemp.getAsObject());
                 var trainerTemp = db.prepare('SELECT * FROM TRAINERS');
                 for(var trainers = []; trainerTemp.step();) trainers.push(trainerTemp.getAsObject());
+                
                 var DB = {};
                 DB.Agents = agents;
                 DB.Coaches = coaches;
@@ -60,6 +75,8 @@ angular
         }, 0);
         return defer.promise;
     };
+
+    
 }])
 
 .run(function(DB, dataService) {

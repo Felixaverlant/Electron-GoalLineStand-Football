@@ -92,6 +92,8 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
                     ]
                 };
                 $scope.ok = function () {
+                    roster = undefined;
+                    $scope.team = undefined;
                     $uibModalInstance.close();
                 };          
                 $scope.gridOptions.data = roster;
@@ -114,8 +116,98 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
         });
     };
 
-    vm.TeamOptions = function(teamSelected, teamId) {
+    vm.TeamInfo = function(teamSelected, teamId) {
+        var frontOffice = [];
+        
 
+        var modalInstance = $uibModal.open({
+            template: `     
+                            <div class="modal-header" ng-style="teamPri">
+                                <h3 class="modal-title" id="modal-title">
+                                {{teamSelected}} Team Information:   Finished {{team.DivStanding}}{{teamPlace}} in the {{team.ConfName}} {{team.DivName}}</h3>
+                            </div>
+                            <div class="modal-body" id="modal-body" ng-style="teamSec">
+                                <uib-tabset active="active">
+                                    <uib-tab index="0" heading="Team">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div>Stadium Name:  {{team.StadiumName}}</div>
+                                            <div><img style="height: 250px; width: 400px;" src="{{team.StadiumPic}}" alt=""/></div>
+                                            <div>Stadium Capacity: {{team.StadiumCapacity}}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    </uib-tab>
+                                    <uib-tab index="1" heading="Coaches">
+                                    
+                                    </uib-tab>
+                                    <uib-tab index="2" heading="Front Office">
+                                    
+                                    </uib-tab>
+                                </uib-tabset>
+                                
+                            </div>
+                            <div class="modal-footer" ng-style="teamTer">
+                                <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+                            </div>
+                       `,
+            controller: function ($scope, $uibModalInstance, $interval, $filter) {
+                //var grid;
+                //<div id="grid1" ui-grid="gridOptions" class="grid"></div>
+                $scope.teamSelected = teamSelected;
+                $scope.team = $filter('filter')(DB.load.data.Teams, {TeamID: teamId}, true)[0];
+                $scope.teamPri = {'background-color': $scope.team.MainColor, 'color': $scope.team.TrimColor};
+                $scope.teamSec = {'background-color': $scope.team.SecondaryColor};
+                $scope.teamTer =  {'background-color': $scope.team.TrimColor};
+                $scope.teamPlace = DB.getNumEnding($scope.team.DivStanding);
+                console.log($scope.teamPlace);
+                /*$scope.gridOptions = {
+                    onRegisterApi: function(gridApi) {
+                        $scope.gridApi = gridApi;
+                        $interval(function () {
+                            $scope.gridApi.core.handleWindowResize();
+                        }, 500, 10);
+                    },
+                    enableSorting: true,
+                    columnDefs: [
+                        {name: 'FName', displayName: 'First Name', width: '15%'},
+                        {name: 'LName', displayName: 'Last Name', width: '15%'},
+                        {name: 'College', width: '15%'},
+                        {name: 'Age', width: '6%'},
+                        {name: 'Height', width: '6%'},
+                        {name: 'Weight', width: '7%'},
+                        {name: 'ArmLength', displayName: 'Arm Length', width: '7%'},
+                        {name: 'HandSize', displayName: 'Hand Size', width: '7%'},
+                        {name: 'Pos', width: '6%'},
+                        {name: 'PosType', displayName: 'Position Type', width: '15%'}
+                    ]
+                };*/
+                $scope.ok = function () {
+                    $uibModalInstance.close();
+                };          
+                //$scope.gridOptions.data = roster;
+            },
+            resolve: {
+               team: function() {
+                   return $scope.team;
+               },
+               teamSelected : function() {
+                   return $scope.teamSelected;
+               },
+               teamPri: function() {
+                   return $scope.teamPri;
+               },
+               teamSec: function () {  
+                   return $scope.teamSec;
+               },
+               teamTer : function () {
+                   return $scope.teamTer;
+               },
+               teamPlace : function() {
+                    return $scope.teamPlace;
+               }       
+            }
+        });
     };
 
 vm.sides = [];

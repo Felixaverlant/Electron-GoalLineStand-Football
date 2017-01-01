@@ -105,3 +105,9 @@ button.controls:nth-of-type(2) {
   top: 0;
   right: 0;
 }
+
+.animated {
+-webkit-animation-fill-mode: backwards;
+animation-fill-mode: backwards;
+animation-duration: 2.5s;
+}

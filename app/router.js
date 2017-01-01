@@ -33,6 +33,7 @@ angular
             default  : result = 'th';
         };
         defer.resolve(result);
+        return result;
     };
 })
 

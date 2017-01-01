@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" href="content/flex.css" />
 <link rel="stylesheet" type="text/css" href="content/toggleSwitch.css"/>
 
-<form ng-submit="vm.onSubmit()" novalidate ng-controller="newGameCtrl">
+<form ng-submit="vm.onSubmit()" novalidate ng-controller="newGameCtrl" class="start-career2 animated bounceInRight">
 
     <div class="panel panel-primary">
         <div class="panel-heading px-nested-panel-heading clearfix mainPanelHeader">
@@ -47,6 +47,10 @@
                 </formly-form>
             </div>
         </div>
-        <button type="button" class="btn btn-primary pull-left" ui-sref="Start.career"><span style="margin-right: 3px;" class="glyphicon glyphicon-circle-arrow-left pull-left"></span>Prev Page</button>
-        <button type="button" class="btn btn-primary pull-right" ui-sref="Start.career3">Next Page<span style="margin-left: 3px;" class="glyphicon glyphicon-circle-arrow-right pull-right"></span></button>
+        <button type="button" class="btn btn-primary pull-left hvr-grow-shadow" onclick="$('.start-career2').removeClass('bounceInRight').addClass('bounceOutLeft')" 
+            ui-sref="Start.career"><span style="margin-right: 3px;" class="glyphicon glyphicon-circle-arrow-left pull-left">
+            </span>Prev Page</button>
+        <button type="button" class="btn btn-primary pull-right hvr-grow-shadow" onclick="$('.start-career2').removeClass('bounceInRight').addClass('bounceOutLeft')"
+            ui-sref="Start.career3">Next Page<span style="margin-left: 3px;" class="glyphicon glyphicon-circle-arrow-right pull-right">
+            </span></button>
 </form>

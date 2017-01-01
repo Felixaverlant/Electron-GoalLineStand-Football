@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" href="content/flex.css" />
 <link rel="stylesheet" type="text/css" href="content/toggleSwitch.css"/>
 
-      <form ng-submit="vm.onSubmit()" novalidate ng-controller="newGameCtrl">
+      <form ng-submit="vm.onSubmit()" novalidate ng-controller="newGameCtrl" class="start-career animated bounceInRight">
           <div class="panel panel-primary">
                 <div class="panel-heading px-nested-panel-heading clearfix mainPanelHeader">
                     <strong class="control-label" >
@@ -47,7 +47,9 @@
                     </formly-form>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary pull-right" ui-sref="Start.career2">Next Page<span style="margin-left: 3px;" class="glyphicon glyphicon-circle-arrow-right pull-right"></span></button> 
+                <button type="button" onclick="$('.start-career').removeClass('bounceInRight').addClass('bounceOutLeft')" class="btn btn-primary pull-right hvr-grow-shadow" 
+                    ui-sref="Start.career2">Next Page<span style="margin-left: 3px;" class="glyphicon glyphicon-circle-arrow-right pull-right"></span>
+                </button> 
             </div>
         </form>
 

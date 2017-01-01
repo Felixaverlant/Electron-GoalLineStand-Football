@@ -9,11 +9,12 @@
     <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="node_modules/nya-bootstrap-select/dist/css/nya-bs-select.css"/>
     <link rel="stylesheet" type="text/css" href="node_modules/normalize.css/normalize.css"/>   
-    <link rel="stylesheet" type="text/css" href="node_modules/angularjs-slider/dist/rzslider.css"/>
-    <link rel="stylesheet" type="text/css" href="content/3DCarousel.css"/>
+    <link rel="stylesheet" type="text/css" href="node_modules/angularjs-slider/dist/rzslider.css"/>    
     <link rel="stylesheet" type="text/css" href="content/UI-grid.css"/>
     <link rel="stylesheet" type="text/css" href="content/index.css"/>
-    <link rel="stylesheet" type="text/css" href="New_Game_Wizard/new_game.css" />
+    <link rel="stylesheet" type="text/css" href="content/effects/animate.css"/>
+    <link rel="stylesheet" type="text/css" href="content/effects/hover.css"/>
+    <link rel="stylesheet" type="text/css" href="content/3DCarousel.css"/>
     
     
      <script src="node_modules/api-check/dist/api-check.js"></script>
@@ -49,9 +50,9 @@
         <a class="navbar-brand" ui-sref="#">Goal Line Stand Football</a>
     </div>
     <ul class="nav navbar-nav">
-        <li><a ui-sref="home">Home</a></li>
-        <li><a ui-sref="settings">Settings</a></li>
-        <li><a ui-sref="menu">Menu</a></li>
+        <li><a ui-sref="home" class="hvr-bounce-to-bottom">Home</a></li>
+        <li><a ui-sref="settings" class="hvr-bounce-to-bottom">Settings</a></li>
+        <li><a ui-sref="menu" class="hvr-bounce-to-bottom">Menu</a></li>
     </ul>    
 </nav>
 <!-- MAIN CONTENT -->
@@ -60,7 +61,7 @@
     <!-- THIS IS WHERE WE WILL INJECT OUR CONTENT ============================== -->
     
     <div ng-controller="loadCtrl">
-        <div ng-show="appState.isLoading" class="fadein fadeout">
+        <div ng-show="appState.isLoading" class="fadeout">
             <span class="title col-md-11 pull-right" style="color: white; font-size: 42px; margin-bottom: 20px;">
                 Please Wait...Goal Line Stand is Loading...</span>
             <div class="spinner">                
@@ -70,7 +71,7 @@
             </div>
         </div>
             
-        <div ng-show="!appState.isLoading" class="fadein fadeout">         
+        <div ng-show="!appState.isLoading" class=" loadScreen animated zoomInDown">         
             <div ui-view></div>
         </div>
     </div>

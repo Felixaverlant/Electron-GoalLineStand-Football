@@ -119,6 +119,8 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
             $scope.team = undefined;
         });
     };
+    class A {};
+    class B extends A {};
 
     vm.TeamInfo = function(teamSelected, teamId) {
         var frontOffice = [];
@@ -126,22 +128,52 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
         var modalInstance = $uibModal.open({
             template: `<div class="modal-header" ng-style="teamPri">
                           <h3 class="modal-title" id="modal-title">
-                          {{teamSelected}} Team Information:   Finished {{team.DivStanding}}{{teamPlace}} in the {{team.ConfName}} {{team.DivName}}</h3>
+                          {{teamSelected}} Team Information:  {{record}}  <span style="margin-left: 10px;">{{team.DivStanding}}{{teamPlace}} in the {{team.ConfName}} {{team.DivName}}</span></h3>
+                          <span style="margin-left: 15px;"><b>Offense(Rank):</b> {{teamOffYds | number: 2}} yards/gm({{teamOffRank}})  {{teamPointsOff | number: 2}} pts/gm <span style="margin-left: 10px;"><b>Defense(Rank):</b> {{teamDefYds | number: 2}} yards/gm({{teamDefRank}})   {{teamPointsDef | number: 2}} pts/gm</span></span>
                        </div>
                         <div class="modal-body" id="modal-body" ng-style="teamSec">
                             <uib-tabset active="active">
                                 <uib-tab index="0" heading="Team">
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        
+                                    <div class="col-md-3">                                    
                                         <div><img style="height: 250px; width: 400px;" src="{{team.StadiumPic}}" alt=""/></div>
                                     </div>
-                                    <div class="col-md-2 pull-left">
-                                     <span ng-style:"textColor">Stadium Name:  {{team.StadiumName}}</span>
-                                     <span ng-style:"textColor">Stadium Capacity: {{team.StadiumCapacity}}</span>
+                                    <div class="col-md-3 pull-left">
+                                        <p ng-style="textColor" style="font-size: 20px;"> {{team.StadiumName}}</p>
+                                        <p ng-style="textColor" style="font-size: 16px;"> {{team.City}}, {{team.State}}</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">Capacity: {{team.StadiumCapacity}}</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">Attendance: {{(team.AvgAttendance/team.StadiumCapacity)*100 | number: 2}}% </p>
+                                        <hr/>
+                                        <p ng-style="textColor" style="font-size: 20px;">Upcoming Draft</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">Positon: {{team.DraftPosition}}{{draftPos}}</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">Biggest Need: QB</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">Deepest Position: CB</p>
                                     </div>
-                                </div>
+                                    <div class="col-md-3 pull-left">
+                                        <p ng-style="textColor" style="font-size: 20px;">Financials</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">Salary Cap: \${{salaryCap | number}}</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">Remaining: \${{maxCap - salaryCap | number}}</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">Dead Cap: \${{deadCap | number}}</p>
+                                        <hr/>
+                                        <p ng-style="textColor" style="font-size: 20px;">Revenue</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">Team Value: \${{teamValue | number}}</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">Team Income: \${{revenue | number}}</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">Avg Ticket Price: \${{avgTicket | number: 2}}</p>                                    
+                                    </div>
+                                    <div class="col-md-3 pull-left">
+                                        <p ng-style="textColor" style="font-size: 20px;">3 Highest Paid Players</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">{{highPlay1}} \${{highPlay1Sal | number}}</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">{{highPlay2}}: \${{highPlay2Sal | number}}</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">{{highPlay3}}: \${{highPlay3Sal | number}}</p>
+                                        <hr/>
+                                        <p ng-style="textColor" style="font-size: 20px;">3 Highest Rated Players</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">{{highPlay4}} {{highPlay4Rat | number}} Overall Rating</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">{{highPlay5}}: {{highPlay5Rat | number}} Overall Rating</p>
+                                        <p ng-style="textColor" style="font-size: 16px;">{{highPlay6}}: {{highPlay6Rat | number}} Overall Rating</p>
                                     
+                                    
+                                    </div>
+                                </div>                                    
                                     </uib-tab>
                                     <uib-tab index="1" heading="Coaches">
                                     
@@ -164,13 +196,73 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
                 $scope.teamPri = {'background-color': $scope.team.MainColor, 'color': $scope.team.TrimColor};
                 $scope.teamSec = {'background-color': $scope.team.SecondaryColor};
                 $scope.teamTer = {'background-color': $scope.team.TrimColor};
-                $scope.textColor = {'color' : $scope.team.TrimColor, 'font-weight': 'bold', 'font-size': '28px'};
+                $scope.textColor = {'color' : $scope.team.TrimColor, 'font-weight': 'bold', 'margin-left': '20px' };
                 $scope.teamPlace = DB.getNumEnding($scope.team.DivStanding);
+                $scope.record = $scope.team.Wins + '-' + $scope.team.Losses;
+                $scope.record += $scope.team.Ties > 0 ? '-' + $scope.team.Ties : '';
+                $scope.teamOffYds = $filter('filter')(DB.load.data.TeamOffense, {TeamID: teamId}, true)[0].TotalYards / 16;
+                $scope.teamOffRank = _.findIndex(DB.load.data.TeamOffense, {'TeamID': teamId}) + 1; //lodash function
+                $scope.teamPointsOff = _.filter(DB.load.data.TeamOffense, {'TeamID': teamId})[0].PointsFor / 16;
+                $scope.teamDefYds = $filter('filter')(DB.load.data.TeamDefense, {TeamID: teamId}, true)[0].TotalYards / 16;
+                $scope.teamDefRank = _.findIndex(DB.load.data.TeamDefense, {'TeamID': teamId}) + 1; //Lodash function
+                $scope.teamPointsDef = _.filter(DB.load.data.TeamDefense, {'TeamID': teamId})[0].PointsAllowed / 16;
 
+                $scope.draftPos = DB.getNumEnding($scope.team.DraftPosition);
+                $scope.roster = _.filter(DB.load.data.RosterPlayers, {'TeamID': teamId});
+                $scope.salaryCap = _.random(133000000, 155000000);
+                $scope.maxCap = 156000000;
+                $scope.deadCap = _.random(800000, 12000000);
+                $scope.teamValue = _.random(1500000000, 4200000000);
+                $scope.revenue = _.random(300000000, 550000000);
+                $scope.avgTicket = _.random(61.36, 130.75);
+                $scope.highPlay1 = _.random(0, $scope.roster.length - 1);
+                $scope.highPlay1 = $scope.roster[$scope.highPlay1].FName + ' ' + $scope.roster[$scope.highPlay1].LName + ' ' + $scope.roster[$scope.highPlay1].Pos;
+                $scope.highPlay1Sal = _.random(17000000, 22000000);
+                $scope.highPlay2 = _.random(0, $scope.roster.length - 1);
+                $scope.highPlay2 = $scope.roster[$scope.highPlay2].FName + ' ' + $scope.roster[$scope.highPlay2].LName + ' ' + $scope.roster[$scope.highPlay2].Pos;
+                $scope.highPlay2Sal = _.random(14000000, 16900000);
+                $scope.highPlay3 = _.random(0, $scope.roster.length - 1);
+                $scope.highPlay3 = $scope.roster[$scope.highPlay3].FName + ' ' + $scope.roster[$scope.highPlay3].LName + ' ' + $scope.roster[$scope.highPlay3].Pos;
+                $scope.highPlay3Sal = _.random(10000000, 13900000);
+                $scope.highPlay4 = _.random(0, $scope.roster.length - 1);
+                $scope.highPlay4 = $scope.roster[$scope.highPlay4].FName + ' ' + $scope.roster[$scope.highPlay4].LName + ' ' + $scope.roster[$scope.highPlay4].Pos;
+                $scope.highPlay4Rat = _.random(89, 99);
+                $scope.highPlay5 = _.random(0, $scope.roster.length - 1);
+                $scope.highPlay5 = $scope.roster[$scope.highPlay5].FName + ' ' + $scope.roster[$scope.highPlay5].LName + ' ' + $scope.roster[$scope.highPlay5].Pos;
+                $scope.highPlay5Rat = _.random(85, $scope.highPlay4Rat - 1);
+                $scope.highPlay6 = _.random(0, $scope.roster.length - 1);
+                $scope.highPlay6 = $scope.roster[$scope.highPlay6].FName + ' ' + $scope.roster[$scope.highPlay6].LName + ' ' + $scope.roster[$scope.highPlay6].Pos;
+                $scope.highPlay6Rat = _.random(80, $scope.highPlay5Rat - 1);
+                //TODO: Calculate ways to grade roster players
+                /*getDraftPos($scope.roster);
+               function getDraftPos(roster) { //get biggest weakness by checking player grades at each position and taking the average
+                    var QB, RB, WR, TE, LT, LG, C, RG, RT, DE, DT, OLB, ILB, CB, FS, SS;
+                    _.each($scope.roster, function(value) {
+                        
+                        switch(value.Pos) { //get the 
+                            case 'QB': QB.value += value.AverageGrade; QB.count++; break;
+                            case 'RB': RB += value.AverageGrade; break;
+                            case 'WR': WR += value.AverageGrade; break;
+                            case 'TE': TE += value.AverageGrade; break;
+                            case 'LT': LT += value.AverageGrade; break;
+                            case 'LG': LG += value.AverageGrade; break;
+                            case 'C': C += value.AverageGrade; break;
+                            case 'RG': RG += value.AverageGrade; break;
+                            case 'RT': RT += value.AverageGrade; break;
+                            case 'DE': DE += value.AverageGrade; break;
+                            case 'DT': DT += value.AverageGrade; break;
+                            case 'OLB': OLB += value.AverageGrade; break;
+                            case 'ILB': ILB += value.AverageGrade; break;
+                            case 'CB': CB += value.AverageGrade; break;
+                            case 'FS': FS += value.AverageGrade; break;
+                            case 'SS': SS += value.AverageGrade; break;
+                        }
 
+                    });
 
+                };
                 //console.log($scope.teamPlace);
-                /*$scope.gridOptions = {
+                $scope.gridOptions = {
                     onRegisterApi: function(gridApi) {
                         $scope.gridApi = gridApi;
                         $interval(function () {
@@ -195,27 +287,7 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
                     $uibModalInstance.close();
                 };          
                 //$scope.gridOptions.data = roster;
-            },
-            /*resolve: {
-               team: function() {
-                   return $scope.team;
-               },
-               teamSelected : function() {
-                   return $scope.teamSelected;
-               },
-               teamPri: function() {
-                   return $scope.teamPri;
-               },
-               teamSec: function () {  
-                   return $scope.teamSec;
-               },
-               teamTer : function () {
-                   return $scope.teamTer;
-               },
-               teamPlace : function() {
-                    return $scope.teamPlace;
-               }       
-            }*/
+            }
         });
     };
 

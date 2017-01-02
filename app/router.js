@@ -62,7 +62,12 @@ angular
                 for(var teams = []; teamTemp.step();) teams.push(teamTemp.getAsObject());
                 var trainerTemp = db.prepare('SELECT * FROM TRAINERS');
                 for(var trainers = []; trainerTemp.step();) trainers.push(trainerTemp.getAsObject());
-                
+
+                var teamOffTemp = db.prepare('SELECT * FROM TeamOffense ORDER BY TotalYards DESC');
+                for(var teamOffense = []; teamOffTemp.step();) teamOffense.push(teamOffTemp.getAsObject());
+                var teamDefTemp = db.prepare('SELECT * FROM TeamDefense ORDER BY TotalYards');
+                for(var teamDefense = []; teamDefTemp.step();) teamDefense.push(teamDefTemp.getAsObject());
+
                 var DB = {};
                 DB.Agents = agents;
                 DB.Coaches = coaches;
@@ -72,6 +77,9 @@ angular
                 DB.RosterPlayers = rosterPlayers,
                 DB.Teams = teams;
                 DB.Trainers = trainers;
+                DB.TeamOffense = teamOffense;
+                DB.TeamDefense = teamDefense;
+
                 defer.resolve(DB);
         }, 0);
         return defer.promise;

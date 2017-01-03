@@ -38,8 +38,8 @@ angular
         },
     ]);
 })
-.controller('teamSelectCtrl', ['$scope', '$stateParams', '$uibModal', 'DB',
-function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
+.controller('teamSelectCtrl', ['$scope', '$stateParams', '$uibModal', 'DB', 'uiGridConstants',
+function teamSelectCtrl ($scope, $stateParams, $uibModal, DB, uiGridConstants) {
 
     //DB is the database service object holding all the tables
     var vm = this;
@@ -52,6 +52,7 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
 //opens the roster of this team, loaded via sqlite;
     vm.ViewRoster = function(teamSelected, teamId) {
         var roster = [];
+
         var modalInstance = $uibModal.open({
             backdrop: 'static',
             template: `     
@@ -110,7 +111,8 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
                         Height: value.Height, Weight: value.Weight, ArmLength: value. ArmLength, HandSize: value.HandLength,
                         Pos: value.Pos, PosType: value.PosType});                
                 });
-               } 
+               },
+            
             },
             size: 'lg'  
         });
@@ -119,17 +121,19 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
             $scope.team = undefined;
         });
     };
-    class A {};
-    class B extends A {};
-
-    vm.TeamInfo = function(teamSelected, teamId) {
-        var frontOffice = [];
-        
+    vm.TeamInfo = function(teamSelected, teamId) {    
+        var coaches = [];
+        var frontOffice = [];  
+           
         var modalInstance = $uibModal.open({
             template: `<div class="modal-header" ng-style="teamPri">
                           <h3 class="modal-title" id="modal-title">
                           {{teamSelected}} Team Information:  {{record}}  <span style="margin-left: 10px;">{{team.DivStanding}}{{teamPlace}} in the {{team.ConfName}} {{team.DivName}}</span></h3>
-                          <span style="margin-left: 15px;"><b>Offense(Rank):</b> {{teamOffYds | number: 2}} yards/gm({{teamOffRank}})  {{teamPointsOff | number: 2}} pts/gm <span style="margin-left: 10px;"><b>Defense(Rank):</b> {{teamDefYds | number: 2}} yards/gm({{teamDefRank}})   {{teamPointsDef | number: 2}} pts/gm</span></span>
+                          <span style="margin-left: 10px;"><b>Offense(Rank):</b> {{teamOffYds | number: 2}} yds/gm({{teamOffRank}})  <b>Pass:</b> {{passOffYds | number: 2}} yds/gm
+                          yds/gm({{passOffRank}}) <b>Rush:</b> {{rushOffYds | number: 2}} yds/gm({{rushOffRank}}) <b>Pts:</b> {{teamPointsOff | number: 2}} pts/gm({{pointsOffRank}}) 
+                          <span style="margin-left: 10px;"><b>Defense(Rank):</b> {{teamDefYds | number: 2}} yds/gm({{teamDefRank}})  <b>Pass:</b> 
+                          {{passDefYds | number: 2}} yds/gm({{passDefRank}})  <b>Rush:</b> {{rushDefYds | number: 2}} yds/gm({{rushDefRank}})   <b>Pts: </b>{{teamPointsDef | number: 2}}
+                          pts/gm({{pointsDefRank}})</span></span>
                        </div>
                         <div class="modal-body" id="modal-body" ng-style="teamSec">
                             <uib-tabset active="active">
@@ -169,14 +173,17 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
                                         <p ng-style="textColor" style="font-size: 20px;">3 Highest Rated Players</p>
                                         <p ng-style="textColor" style="font-size: 16px;">{{highPlay4}} {{highPlay4Rat | number}} Overall Rating</p>
                                         <p ng-style="textColor" style="font-size: 16px;">{{highPlay5}}: {{highPlay5Rat | number}} Overall Rating</p>
-                                        <p ng-style="textColor" style="font-size: 16px;">{{highPlay6}}: {{highPlay6Rat | number}} Overall Rating</p>
-                                    
-                                    
+                                        <p ng-style="textColor" style="font-size: 16px;">{{highPlay6}}: {{highPlay6Rat | number}} Overall Rating</p>                                   
                                     </div>
                                 </div>                                    
                                     </uib-tab>
                                     <uib-tab index="1" heading="Coaches">
-                                    
+                                    <div class="row">
+                                        <div class="col-md-12 pull-left">
+                                            <div id="grid1" ui-grid="gridOptions" class="grid"></div>
+                                        </div>
+                                    </div>
+
                                     </uib-tab>
                                     <uib-tab index="2" heading="Front Office">
                                     
@@ -188,7 +195,10 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
                                 <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
                             </div>
                        `,
-            controller: function ($scope, $uibModalInstance, $interval, $filter) {
+            resolve: {
+                coaches : coaches.push(_.filter(DB.load.data.Coaches, {'TeamID': teamId}))
+            },
+            controller: function ($scope, $uibModalInstance, $interval, $filter, uiGridConstants) {
                 //var grid;
                 //<div id="grid1" ui-grid="gridOptions" class="grid"></div>
                 $scope.teamSelected = teamSelected;
@@ -198,15 +208,32 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
                 $scope.teamTer = {'background-color': $scope.team.TrimColor};
                 $scope.textColor = {'color' : $scope.team.TrimColor, 'font-weight': 'bold', 'margin-left': '20px' };
                 $scope.teamPlace = DB.getNumEnding($scope.team.DivStanding);
+                
+                ///////////////////////////TEAM INFO SCREEN///////////////////////////////////////////////////////
                 $scope.record = $scope.team.Wins + '-' + $scope.team.Losses;
                 $scope.record += $scope.team.Ties > 0 ? '-' + $scope.team.Ties : '';
                 $scope.teamOffYds = $filter('filter')(DB.load.data.TeamOffense, {TeamID: teamId}, true)[0].TotalYards / 16;
                 $scope.teamOffRank = _.findIndex(DB.load.data.TeamOffense, {'TeamID': teamId}) + 1; //lodash function
+                $scope.passOff = _.orderBy(DB.load.data.TeamOffense, ['PassingYards'], ['desc']);
+                $scope.passOffYds = _.filter(DB.load.data.TeamOffense, {TeamID: teamId})[0].PassingYards / 16;
+                $scope.passOffRank = _.findIndex($scope.passOff, {'TeamID': teamId}) + 1;
+                $scope.rushOff = _.orderBy(DB.load.data.TeamOffense, ['RushingYards'], ['desc']);
+                $scope.rushOffYds = _.filter(DB.load.data.TeamOffense, {'TeamID': teamId})[0].RushingYards / 16;
+                $scope.rushOffRank = _.findIndex($scope.rushOff, {'TeamID': teamId}) + 1;
+                $scope.pointsOff = _.orderBy(DB.load.data.TeamOffense, ['PointsFor'], ['desc']);
                 $scope.teamPointsOff = _.filter(DB.load.data.TeamOffense, {'TeamID': teamId})[0].PointsFor / 16;
+                $scope.pointsOffRank = _.findIndex($scope.pointsOff, {'TeamID': teamId}) + 1;
                 $scope.teamDefYds = $filter('filter')(DB.load.data.TeamDefense, {TeamID: teamId}, true)[0].TotalYards / 16;
                 $scope.teamDefRank = _.findIndex(DB.load.data.TeamDefense, {'TeamID': teamId}) + 1; //Lodash function
+                $scope.passDef = _.orderBy(DB.load.data.TeamDefense, ['PassingYards'], ['asc']);
+                $scope.passDefYds = _.filter(DB.load.data.TeamDefense, {TeamID: teamId})[0].PassingYards / 16;
+                $scope.passDefRank = _.findIndex($scope.passDef, {'TeamID': teamId}) + 1;
+                $scope.rushDef = _.orderBy(DB.load.data.TeamDefense, ['RushingYards'], ['asc']);
+                $scope.rushDefYds = _.filter(DB.load.data.TeamDefense, {'TeamID': teamId})[0].RushingYards / 16;
+                $scope.rushDefRank = _.findIndex($scope.rushDef, {'TeamID': teamId}) + 1;
+                $scope.pointsDef = _.orderBy(DB.load.data.TeamDefense, ['PointsAgainst'], ['asc']);
                 $scope.teamPointsDef = _.filter(DB.load.data.TeamDefense, {'TeamID': teamId})[0].PointsAllowed / 16;
-
+                $scope.pointsDefRank = _.findIndex($scope.pointsDef, {'TeamID': teamId}) + 1;
                 $scope.draftPos = DB.getNumEnding($scope.team.DraftPosition);
                 $scope.roster = _.filter(DB.load.data.RosterPlayers, {'TeamID': teamId});
                 $scope.salaryCap = _.random(133000000, 155000000);
@@ -234,7 +261,7 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
                 $scope.highPlay6 = $scope.roster[$scope.highPlay6].FName + ' ' + $scope.roster[$scope.highPlay6].LName + ' ' + $scope.roster[$scope.highPlay6].Pos;
                 $scope.highPlay6Rat = _.random(80, $scope.highPlay5Rat - 1);
                 //TODO: Calculate ways to grade roster players
-                /*getDraftPos($scope.roster);
+                 /*getDraftPos($scope.roster);
                function getDraftPos(roster) { //get biggest weakness by checking player grades at each position and taking the average
                     var QB, RB, WR, TE, LT, LG, C, RG, RT, DE, DT, OLB, ILB, CB, FS, SS;
                     _.each($scope.roster, function(value) {
@@ -260,8 +287,16 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
 
                     });
 
-                };
-                //console.log($scope.teamPlace);
+                };*/
+                ////////////////////////////////////COACHES SCREEN/////////////////////////////////////////////////////////
+                $scope.Calc = function(grid, row) {
+                                value = ((row.entity.JudgingQB + row.entity.JudgingRB + row.entity.JudgingWR + row.entity.JudgingTE + row.entity.JudgingOL + 
+                                row.entity.JudgingDL + row.entity.JudgingLB + row.entity.JudgingCB + row.entity.JudgingSF) / 9);
+
+                                return _.round(value);
+                                }
+                $scope.headCoach = _.find($scope.coaches, {'CoachType': 1});
+                var value;
                 $scope.gridOptions = {
                     onRegisterApi: function(gridApi) {
                         $scope.gridApi = gridApi;
@@ -271,23 +306,36 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB) {
                     },
                     enableSorting: true,
                     columnDefs: [
-                        {name: 'FName', displayName: 'First Name', width: '15%'},
-                        {name: 'LName', displayName: 'Last Name', width: '15%'},
-                        {name: 'College', width: '15%'},
+                        {name: 'FName', displayName: 'First Name', width: '7%'},
+                        {name: 'LName', displayName: 'Last Name', width: '7%'},
                         {name: 'Age', width: '6%'},
-                        {name: 'Height', width: '6%'},
-                        {name: 'Weight', width: '7%'},
-                        {name: 'ArmLength', displayName: 'Arm Length', width: '7%'},
-                        {name: 'HandSize', displayName: 'Hand Size', width: '7%'},
-                        {name: 'Pos', width: '6%'},
-                        {name: 'PosType', displayName: 'Position Type', width: '15%'}
+                        {name: 'CoachType', visible: false, sort: {direction: uiGridConstants.ASC, priority: 0}},
+                        {name: 'CoachTypeStr', displayName: 'Position', width: '15%'},
+                        {name: 'SideOfBall', displayName: 'Specialty', width: '7%', cellTooltip: 'Side of ball the coach is most familiar with.'},
+                        {name: 'OffAbility', displayName: 'Off Ability', width: '10%', cellTooltip: 'Skill level at coaching offense.'},
+                        {name: 'OffPhil', displayName: 'Off Philosophy', width: '10%', cellTooltip: 'Base offensive philosophy for the coach.'},
+                        {name: 'DefAbility', displayName: 'Def Ability', width: '10%', cellTooltip: 'Skill level at coaching defense.'},
+                        {name: 'DefPhil', displayName: 'Def Philosophy', width: '10%', cellTooltip: 'Base defensive philosophy for the coach.'},
+                        {name: 'JudgingPlayers',  displayName: 'Judging Players', width: '10%', 
+                            cellTemplate: `<div class="ui-grid-cell-contents" title="Gives an overall grade for their skill in judging players. Skills may widely vary by position.">
+                                               {{grid.appScope.Calc(grid, row)}}</div>`
+                                            
+                            
+                        }
+                        //{name: 'ArmLength', displayName: 'Arm Length', width: '7%'},
+                        //{name: 'HandSize', displayName: 'Hand Size', width: '7%'},
+                        //{name: 'Pos', width: '6%'},
+                        //{name: 'PosType', displayName: 'Position Type', width: '15%'}
                     ]
-                };*/
+                };
                 $scope.ok = function () {
                     $uibModalInstance.close();
                 };          
-                //$scope.gridOptions.data = roster;
-            }
+                $scope.gridOptions.data = coaches[0];
+            },
+
+                
+
         });
     };
 

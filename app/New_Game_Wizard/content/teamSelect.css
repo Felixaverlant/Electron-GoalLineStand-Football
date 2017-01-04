@@ -111,3 +111,8 @@ button.controls:nth-of-type(2) {
 animation-fill-mode: backwards;
 animation-duration: 2.5s;
 }
+
+.ui-grid-header-cell, .ui-grid-cell, .ui-grid-cell-contents{
+text-align:center;
+position: relative;
+}

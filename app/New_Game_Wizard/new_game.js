@@ -123,7 +123,7 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB, uiGridConstants) {
     };
     vm.TeamInfo = function(teamSelected, teamId) {    
         var coaches = [];
-        var frontOffice = [];  
+        var personnel = [];  
            
         var modalInstance = $uibModal.open({
             template: `<div class="modal-header" ng-style="teamPri">
@@ -177,30 +177,37 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB, uiGridConstants) {
                                     </div>
                                 </div>                                    
                                     </uib-tab>
-                                    <uib-tab index="1" heading="Coaches">
+                                    <uib-tab index="1" heading="Coaches" >
                                     <div class="row">
                                         <div class="col-md-12 pull-left">
-                                            <div id="grid1" ui-grid="gridOptions" class="grid"></div>
+                                            <div id="grid1" ui-grid="gridOptions1" class="grid"></div>
                                         </div>
                                     </div>
-
                                     </uib-tab>
-                                    <uib-tab index="2" heading="Front Office">
-                                    
+                                    <uib-tab index="2" heading="Front Office" >
+                                        <div class="row">
+                                            <div class="col-md-12 pull-left">
+                                                <div id="grid2" ui-grid="gridOptions2" class="grid"></div>
+                                            </div>
+                                        </div>
                                     </uib-tab>
                                 </uib-tabset>
                                 
                             </div>
                             <div class="modal-footer" ng-style="teamTer">
+                                <span class="pull-left" style="font-size: 20px"><b>Owner:</b> {{owner.FName}} {{owner.LName}} <b>Age:</b> {{owner.Age}}  <b>Reputation:</b> {{ownerRep}}  <b>Finances:</b>  {{ownerFin}}</span>
                                 <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
                             </div>
                        `,
             resolve: {
-                coaches : coaches.push(_.filter(DB.load.data.Coaches, {'TeamID': teamId}))
+                coaches : coaches.push(_.filter(DB.load.data.Coaches, {'TeamID': teamId})),
+                personnel : personnel.push(_.filter(DB.load.data.Personnel, {'TeamID': teamId}))
+
             },
             controller: function ($scope, $uibModalInstance, $interval, $filter, uiGridConstants) {
-                //var grid;
-                //<div id="grid1" ui-grid="gridOptions" class="grid"></div>
+               
+
+
                 $scope.teamSelected = teamSelected;
                 $scope.team = $filter('filter')(DB.load.data.Teams, {TeamID: teamId}, true)[0];
                 $scope.teamPri = {'background-color': $scope.team.MainColor, 'color': $scope.team.TrimColor};
@@ -209,6 +216,33 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB, uiGridConstants) {
                 $scope.textColor = {'color' : $scope.team.TrimColor, 'font-weight': 'bold', 'margin-left': '20px' };
                 $scope.teamPlace = DB.getNumEnding($scope.team.DivStanding);
                 
+                //Owner info in the footer
+                $scope.owner = _.filter(DB.load.data.Owners, {'TeamID': teamId})[0];
+                $scope.ownerRep = (function() {
+                    var rep;
+
+                    if($scope.owner.Reputation < 10) rep = "Very Poor"
+                    else if ($scope.owner.Reputation < 25) rep ="Poor"
+                    else if($scope.owner.Reputation < 50) rep = "Average"
+                    else if($scope.owner.Reputation < 75) rep = "Good"
+                    else if($scope.owner.Reputation < 90) rep = "Very Good"
+                    else rep = "Outstanding";
+
+                    return rep;
+                })();
+
+                $scope.ownerFin = (function() {
+                    var fin;
+
+                    if($scope.owner.PersonalWealth < 10) fin = "Struggling";
+                    else if($scope.owner.PersonalWealth < 25) fin = "Lower Tier";
+                    else if($scope.owner.PersonalWealth < 50) fin = "Middle of the Pack";
+                    else if($scope.owner.PersonalWealth < 75) fin = "Above Average";
+                    else if($scope.owner.PersonalWealth < 90) fin = "Wealthy";
+                    else fin = "Banks ask to borrow money";
+
+                    return fin;
+                })();
                 ///////////////////////////TEAM INFO SCREEN///////////////////////////////////////////////////////
                 $scope.record = $scope.team.Wins + '-' + $scope.team.Losses;
                 $scope.record += $scope.team.Ties > 0 ? '-' + $scope.team.Ties : '';
@@ -289,49 +323,98 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB, uiGridConstants) {
 
                 };*/
                 ////////////////////////////////////COACHES SCREEN/////////////////////////////////////////////////////////
+                $scope.Coach = function(grid, row) {
+                    return _.round((row.entity.CoachQB + row.entity.CoachRB + row.entity.CoachWR + row.entity.CoachTE + row.entity.CoachOL + 
+                    row.entity.CoachDL + row.entity.CoachLB + row.entity.CoachDB + row.entity.CoachST) / 9);
+                };
+                
                 $scope.Calc = function(grid, row) {
                                 value = ((row.entity.JudgingQB + row.entity.JudgingRB + row.entity.JudgingWR + row.entity.JudgingTE + row.entity.JudgingOL + 
                                 row.entity.JudgingDL + row.entity.JudgingLB + row.entity.JudgingCB + row.entity.JudgingSF) / 9);
-
                                 return _.round(value);
-                                }
+                                };
+                $scope.Dev = function(grid, row) {                   
+                    value = ((row.entity.DevQB + row.entity.DevRB + row.entity.DevWR + row.entity.DevTE + row.entity.DevOL + row.entity.DevDL + 
+                    row.entity.DevLB + row.entity.DevCB + row.entity.DevSF) / 9);
+                    return _.round(value);
+                };
+
+                $scope.Train = function(grid, row) {
+                    return _.round((row.entity.LowerBodyTrain + row.entity.UpperBodyTrain + row.entity.CoreTrain + row.entity.PreventInjuryTrain + row.entity.StaminaTrain) / 5)
+                };
                 $scope.headCoach = _.find($scope.coaches, {'CoachType': 1});
                 var value;
-                $scope.gridOptions = {
+            
+
+                    $scope.gridOptions1 = {
+                        onRegisterApi: function(gridApi) {
+                            $scope.gridApi = gridApi;
+                            $interval(function () {
+                                $scope.gridApi.core.handleWindowResize();
+                            }, 1000, 45);
+                        },
+                        enableSorting: true,
+                        columnDefs: [
+                            {name: 'FName', displayName: 'First Name', width: '7%'},
+                            {name: 'LName', displayName: 'Last Name', width: '7%'},
+                            {name: 'Age', width: '4%'},
+                            {name: 'Experience', displayName: 'Exp', width: '4%', cellTooltip: 'Years of NFL coaching experience'},
+                            {name: 'CoachType', visible: false, sort: {direction: uiGridConstants.ASC, priority: 0}},
+                            {name: 'CoachTypeStr', displayName: 'Position', width: '12%'},
+                            {name: 'SideOfBall', displayName: 'Spec.', width: '7%', cellTooltip: 'Side of ball the coach is most familiar with.'},
+                            {name: 'OffAbility', displayName: 'Off Ability', width: '7%', cellTooltip: 'Skill level at coaching offense.'},
+                            {name: 'OffPhil', displayName: 'Off Phil.', width: '7%', cellTooltip: 'Base offensive philosophy for the coach.'},
+                            {name: 'DefAbility', displayName: 'Def Ability', width: '7%', cellTooltip: 'Skill level at coaching defense.'},
+                            {name: 'DefPhil', displayName: 'Def Phil.', width: '7%', cellTooltip: 'Base defensive philosophy for the coach.'},
+                            {name: 'CoachAbility', displayName: 'Coach Ability', width: '8%', 
+                                cellTemplate: `<div class="ui-grid-cell-constants" title="Gives an overall coaching skill level for all positions">
+                                {{grid.appScope.Coach(grid, row)}}</div>`},
+                            {name: 'JudgingPlayers',  displayName: 'Judg. Players', width: '9%', 
+                                cellTemplate: `<div class="ui-grid-cell-contents" title="Gives an overall grade for their skill in judging players. Skills may widely vary by position.">
+                                {{grid.appScope.Calc(grid, row)}}</div>`},
+                            {name: 'DevPlayers', displayName: 'Dev. Players', width: '7%',
+                                cellTemplate: `<div class="ui-grid-cell-contents" title="How well the coach develops players. Overall rating for all positions.">
+                                {{grid.appScope.Dev(grid, row)}}</div>`},
+                            {name: 'TrainPlayers', displayName: 'Training', width: '7%',
+                            cellTemplate: `<div class="ui-grid-cell-contents" title="How effective the coach is at training players."> {{grid.appScope.Train(grid, row)}}</div>`},                       
+                    ]
+                };
+                $scope.gridOptions2 = {
                     onRegisterApi: function(gridApi) {
-                        $scope.gridApi = gridApi;
-                        $interval(function () {
-                            $scope.gridApi.core.handleWindowResize();
-                        }, 500, 10);
-                    },
-                    enableSorting: true,
-                    columnDefs: [
-                        {name: 'FName', displayName: 'First Name', width: '7%'},
-                        {name: 'LName', displayName: 'Last Name', width: '7%'},
-                        {name: 'Age', width: '6%'},
-                        {name: 'CoachType', visible: false, sort: {direction: uiGridConstants.ASC, priority: 0}},
-                        {name: 'CoachTypeStr', displayName: 'Position', width: '15%'},
-                        {name: 'SideOfBall', displayName: 'Specialty', width: '7%', cellTooltip: 'Side of ball the coach is most familiar with.'},
-                        {name: 'OffAbility', displayName: 'Off Ability', width: '10%', cellTooltip: 'Skill level at coaching offense.'},
-                        {name: 'OffPhil', displayName: 'Off Philosophy', width: '10%', cellTooltip: 'Base offensive philosophy for the coach.'},
-                        {name: 'DefAbility', displayName: 'Def Ability', width: '10%', cellTooltip: 'Skill level at coaching defense.'},
-                        {name: 'DefPhil', displayName: 'Def Philosophy', width: '10%', cellTooltip: 'Base defensive philosophy for the coach.'},
-                        {name: 'JudgingPlayers',  displayName: 'Judging Players', width: '10%', 
-                            cellTemplate: `<div class="ui-grid-cell-contents" title="Gives an overall grade for their skill in judging players. Skills may widely vary by position.">
-                                               {{grid.appScope.Calc(grid, row)}}</div>`
-                                            
-                            
-                        }
-                        //{name: 'ArmLength', displayName: 'Arm Length', width: '7%'},
-                        //{name: 'HandSize', displayName: 'Hand Size', width: '7%'},
-                        //{name: 'Pos', width: '6%'},
-                        //{name: 'PosType', displayName: 'Position Type', width: '15%'}
+                            $scope.gridApi = gridApi;
+                            $interval(function () {
+                                $scope.gridApi.core.handleWindowResize();
+                            }, 1000, 45);
+                        },
+                        enableSorting: true,
+                        columnDefs: [
+                            {name: 'FName', displayName: 'First Name', width: '7%'},
+                            {name: 'LName', displayName: 'Last Name', width: '7%'},
+                            {name: 'Age', width: '4%'},
+                            {name: 'Experience', displayName: 'Exp', width: '4%', cellTooltip: 'Years of NFL personnel experience'},
+                            {name: 'PersonnelType', visible: false, sort: {direction: uiGridConstants.ASC, priority: 0}},
+                            {name: 'PersonnelTypeStr', displayName: 'Position', width: '12%'},
+                            {name: 'ScoutRegion', displayName: 'Scout Region', width: '7%', cellTooltip: 'Scouting region or assignment they are responsible for.'},
+                            {name: 'DraftStrategy', displayName: 'Draft Strat', width: '8%', cellTooltip: 'Preferred strategy when it comes to the draft and drafting players.'},
+                            {name: 'TeamBuilding', displayName: 'Team Bldg', width: '8%', cellToolTip: 'Preferred strategy when it comes to building their team.'},
+                            {name: 'ValuesDraftPicks', displayName: 'Val Draft Picks', width: '7%', cellTooltip: 'How much they value draft picks when grading players.'},                
+                            {name: 'ValuesProduction', displayName: 'Val Production', width: '7%', cellTooltip: 'How much they value production when grading players.'},
+                            {name: 'ValuesIntangibles', displayName: 'Val Intangibles', width: '7%', cellTooltip: 'How much they value intangibles when grading players.'},
+                            {name: 'ValuesCombine', displayName: 'Val Combine', width: '7%', cellTooltip: 'How much they value the combine when grading players.'},
+                            {name: 'ValuesCharacter', displayName: 'Val Character', width: '7%', cellTooltip: 'How much they value a player\'s character when grading players.'},
+                            {name: 'JudgingDraft', displayName: 'Judg. Draft', width: '7%', cellTooltip: 'How good they are at judging players in the draft.'},
+                            {name: 'JudgingFA', displayName: 'Judg. FA', width: '7%', cellTooltip: 'How good they are at judging free agents'},
+                            {name: 'JudgingOwn', displayName: 'Judg. Own', width: '7%', cellTooltip: 'How good they are at accurately juding players on their own team and not "falling in love" with certain players'},
+                            {name: 'JudgingPot', displayName: 'Judg. Pot', width: '7%', cellTooltip: 'How good they are at judging a player\'s potential'},
+                            {name: 'OffPhil', displayName: 'Off Phil.', width: '7%', cellTooltip: 'Base offensive philosophy for the coach.'},
+                            {name: 'DefPhil', displayName: 'Def Phil.', width: '7%', cellTooltip: 'Base defensive philosophy for the coach.'}    
                     ]
                 };
                 $scope.ok = function () {
                     $uibModalInstance.close();
                 };          
-                $scope.gridOptions.data = coaches[0];
+                $scope.gridOptions1.data = coaches[0];
+                $scope.gridOptions2.data = personnel[0];
             },
 
                 

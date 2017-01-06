@@ -5,7 +5,7 @@
     'use strict';
 angular
 .module('routerApp', ['ui.router','formly', 'formlyBootstrap', 'ngAnimate', 'ui.bootstrap', 'ngMessages', 
- 'ngStorage', 'ui.grid', 'restangular', 'formly templates', 'nya.bootstrap.select', 
+ 'ngStorage', 'ui.grid', 'restangular', 'formly_templates', 'nya.bootstrap.select', 
 'rzModule', 'ui.mask', 'angular-3d-carousel', 'ui.grid.autoResize'])
 
 .service('DB', function($q) {
@@ -31,7 +31,7 @@ angular
             case '2' : result = 'nd'; break;
             case '3' : result = 'rd'; break;
             default  : result = 'th';
-        };
+        }
         defer.resolve(result);
         return result;
     };
@@ -100,11 +100,6 @@ angular
         $scope.appState =  DB.load;    
 }])
 
-.config(function(formlyConfigProvider) {
-    formlyConfigProvider.setType([
-                
-    ])
-})
 .config(['$stateProvider', '$urlRouterProvider', 
 function($stateProvider, $urlRouterProvider) {
     
@@ -128,12 +123,14 @@ function($stateProvider, $urlRouterProvider) {
         .state('Start.career', {
             url: '/career',
             templateUrl: 'New_Game_Wizard/Start/Start-career.html',
-            //controller: 'careerCtrl',
-            //controllerAs: 'vm'
+            controller: 'careerCtrl',
+            controllerAs: 'vm'
         })
         .state('Start.career2', {
             url: '/career2',
-            templateUrl: 'New_Game_Wizard/Start/Start-career2.html'
+            templateUrl: 'New_Game_Wizard/Start/Start-career2.html',
+            controller: 'career2Ctrl',
+            controllerAs: 'vm'
         })
 
         .state('Start.career3', {

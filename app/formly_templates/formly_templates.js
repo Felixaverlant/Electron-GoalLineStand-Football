@@ -54,23 +54,13 @@ angular
                             <input type="checkbox" style="{{to.margin}}" class="check {{to.pull}}" id="toggle{{to.toggle}}" 
                                 name="toggle{{to.toggle}}" ng-model="checked" ng-click="model[options.key || index] = checked" 
                                 ng-init="checked = to.checked" ng-class="{'col-md-6': !selected, 'pull-right': selected}" checked/>
-                                <strong style="{{to.align}}" >{{to.label}}</strong>
+                                <strong style="{{to.align}}; margin-bottom: 10px;" >{{to.label}}</strong>
                                 <span class="well">
                                 <span>No</span>
                                 <span>Yes</span>
                                     <a class="btn btn-primary"></a>
                                 </span>
                        </label>`,
-            /*template: `<div id="content">
-	                        <input type="checkbox" style="{{to.margin}}" class="check {{to.pull}}" id="toggle{{to.toggle}}" 
-                                name="toggle{{to.toggle}}" ng-model="checked" ng-click="model[options.key || index] = checked" 
-                                ng-init="checked = to.checked" ng-class="{'col-md-6': !selected, 'pull-right': selected}" checked/>
-                        
-	                       <label for="toggle{{to.toggle}}">
-                                <div id="thumb" class="metal radial"></div>
-                            </label>
-                        `,*/
-                        //style="{{to.align}}" <strong>{{to.label}}</strong>
             controller: function($scope) {
                 $scope.model[$scope.options.key] = $scope.to.checked; //sets the initial value of the model
             }
@@ -81,7 +71,7 @@ angular
         },
         {
             name:'nya-bootstrapSelect',
-            template: ` <div><strong>{{to.label}}</strong></div>
+            template: ` <div>{{to.label}}</div>
                         <ol class="nya-bs-select btn-primary" style="{{to.margin}};"
    						ng-model="model[options.key || index]">   
                             <li nya-bs-option="option in to.options" value="option.value"> 
@@ -91,7 +81,7 @@ angular
         },
         {
             name:'vertSlider',
-            template: [`<rzslider rz-slider-model="to.sliderOptions.value" 
+            template: [`<rzslider class="custom-slider" rz-slider-model="to.sliderOptions.value" 
                          rz-slider-options="to.sliderOptions"></rzslider>`].join(''),
             wrapper: ['bootstrapLabel', 'bootstrapHasError']
         },

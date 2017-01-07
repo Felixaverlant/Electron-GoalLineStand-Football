@@ -127,7 +127,7 @@ vm.careerLeague = [
                 {
                     key: 'StartFantDraft',
                     type: 'toggleSwitch',
-                    className: 'col-md-6',
+                    className: 'col-md-2 pull-right',
                     templateOptions: {
                         label: 'Start with Fantasy Draft?',
                         toggle: 'Fant',
@@ -135,26 +135,15 @@ vm.careerLeague = [
                         align: '', //aligns the text label
                         pull: ''  //aligns the toggle switch
                     },
-                    expressionProperties: {
-                        'templateOptions.pull': function($viewValue, $modelValue, $scope) {
-                            if($scope.model.FantDraftType) return 'pull-right';
-                            else return 'center-block';
-                        },
-                        'templateOptions.align': function($viewValue, $modelValue, $scope) {
-                            if($scope.model.FantDraftType) return 'text-align: right';
-                            else return 'text-align: center';
-                        }
-                    },
                     controller: function($scope) {
                         $scope.Update = function(ischecked) {
-
                         vm.model.FantDraftType = ischecked ? vm.model.FantDraftType : undefined; //removes type of fantasy draft if its unchecked
                         };
                     }
                 },
                 {
                     key: 'FantDraftType',
-                    className: 'flex-2 pull-left',
+                    className: 'col-md-2 pull-left',
                     type: 'nya-bootstrapSelect',
                     defaultValue: 'Normal',
                     hideExpression: '!model.StartFantDraft || model.StartFantDraft === "No"',                    
@@ -480,24 +469,12 @@ vm.careerSchedule = [
         className: 'display-flex settings',
         fieldGroup: [
             {        
-                className: 'flex-2',
+                className: 'col-md-2 pull-right',
                 key: 'schedIntGames',
                 type: 'toggleSwitch',
                 templateOptions: {
                     label: 'Schedule International Games?',
-                    checked: true,
-                    pull: '',
-                    align:'',              
-                },
-                expressionProperties: {
-                        'templateOptions.pull': function($viewValue, $modelValue, $scope) {
-                            if($scope.model.IntGamesSeason) return 'pull-right' ;
-                            else return 'center-block';
-                        },
-                        'templateOptions.align': function($viewValue, $modelValue, $scope) {
-                            if($scope.model.IntGamesSeason) return 'text-align: right';
-                            else return 'text-align: center';
-                        }
+                    checked: true            
                 },
                 controller: function($scope) {
                     $scope.Update = function(ischecked) {
@@ -506,7 +483,7 @@ vm.careerSchedule = [
                 }
             },
             {
-            className: 'flex-2 pull-left',
+            className: 'col-md-2 pull-left',
             key: 'IntGamesSeason',
             hideExpression: '!model.schedIntGames || model.schedIntGames === "No"',
             type: 'nya-bootstrapSelect',

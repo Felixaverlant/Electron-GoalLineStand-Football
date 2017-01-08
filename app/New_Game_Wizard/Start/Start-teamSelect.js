@@ -1,4 +1,6 @@
 (function () {
+'use strict';
+
 angular
 .module('routerApp')
 .controller('teamSelectCtrl', ['$scope', '$stateParams', '$uibModal', 'DB', 'uiGridConstants',
@@ -6,11 +8,12 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB, uiGridConstants) {
 
     //DB is the database service object holding all the tables
     var vm = this;
-    vm.teamSelected = 'Arizona Cardinals'; //starts out as default team
-    vm.teamId = 29; //default ID for Arizona
+    $scope.teamSelected = 'Arizona Cardinals'; //starts out as default team
+    $scope.teamId = 29; //default ID for Arizona
     vm.model = $stateParams.model; //retrieves the model passed in by the state
     
-    vm.model.teamSelected = $scope.teamSelected;
+    //vm.model.teamSelected = vm.teamSelected;
+    //vm.model.teamId = vm.teamId;
     
 //opens the roster of this team, loaded via sqlite;
     vm.ViewRoster = function(teamSelected, teamId) {
@@ -80,7 +83,7 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB, uiGridConstants) {
             size: 'lg'  
         });
 
-        modalInstance.result.then(function(response) {
+        modalInstance.result.then(function() {
             $scope.team = undefined;
         });
     };
@@ -184,11 +187,11 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB, uiGridConstants) {
                 $scope.ownerRep = (function() {
                     var rep;
 
-                    if($scope.owner.Reputation < 10) rep = "Very Poor"
-                    else if ($scope.owner.Reputation < 25) rep ="Poor"
-                    else if($scope.owner.Reputation < 50) rep = "Average"
-                    else if($scope.owner.Reputation < 75) rep = "Good"
-                    else if($scope.owner.Reputation < 90) rep = "Very Good"
+                    if($scope.owner.Reputation < 10) rep = "Very Poor";
+                    else if ($scope.owner.Reputation < 25) rep ="Poor";
+                    else if($scope.owner.Reputation < 50) rep = "Average";
+                    else if($scope.owner.Reputation < 75) rep = "Good";
+                    else if($scope.owner.Reputation < 90) rep = "Very Good";
                     else rep = "Outstanding";
 
                     return rep;
@@ -303,7 +306,7 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB, uiGridConstants) {
                 };
 
                 $scope.Train = function(grid, row) {
-                    return _.round((row.entity.LowerBodyTrain + row.entity.UpperBodyTrain + row.entity.CoreTrain + row.entity.PreventInjuryTrain + row.entity.StaminaTrain) / 5)
+                    return _.round((row.entity.LowerBodyTrain + row.entity.UpperBodyTrain + row.entity.CoreTrain + row.entity.PreventInjuryTrain + row.entity.StaminaTrain) / 5);
                 };
                 $scope.headCoach = _.find($scope.coaches, {'CoachType': 1});
                 var value;
@@ -388,7 +391,7 @@ function teamSelectCtrl ($scope, $stateParams, $uibModal, DB, uiGridConstants) {
 vm.sides = [];
   
   //load the teams from the DB.Teams object
-    angular.forEach(DB.load.data.Teams, function(value, key) {
+    angular.forEach(DB.load.data.Teams, function(value) {
         vm.sides.push({image: value.TeamLogoPath, teamID: value.TeamID, title: value.TeamName + ' ' + value.TeamNickname, 
         listItems: ['Offense Rating: 85', 'Defense Rating: 88', 'Special Teams Rating: 79']});
     });

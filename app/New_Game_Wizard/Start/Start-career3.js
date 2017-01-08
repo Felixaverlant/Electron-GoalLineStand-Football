@@ -2,8 +2,12 @@
     'use strict';
 angular
 .module('routerApp')
-.controller('career3Ctrl', function newGameCtrl() {
+.controller('career3Ctrl', function career3Ctrl($scope, $stateParams) {
+    
 var vm = this;
+vm.model = $stateParams.model;
+console.log(vm.model);
+
 vm.careerOwner = [
     {
         className: 'display-flex settings owner',
@@ -65,5 +69,10 @@ vm.careerOwner = [
     }
 ];
 
+vm.careerPlayerCon = [
+    {
+
+    }
+];
 });
 })();

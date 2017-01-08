@@ -2,9 +2,11 @@
     'use strict';
 angular
 .module('routerApp')
-.controller('career2Ctrl', function newGameCtrl($scope, $state) {
+.controller('career2Ctrl', function career2Ctrl($scope, $stateParams) {
 
 var vm = this;
+vm.model = $stateParams.model;
+console.log(vm.model);
 
 vm.careerExpansion = [
     {
@@ -148,7 +150,7 @@ vm.careerRelocation = [
 vm.careerColDraft = [
     {
         className: 'display-flex settings',
-        hideExpression: '!model.AllowCollegeDraft',
+        //hideExpression: '!model.AllowCollegeDraft',
         fieldGroup: [
             {
                 key: 'DraftRounds',
@@ -520,7 +522,5 @@ vm.careerFinancials = [
         ]
     }
 ];
-
-
 });
 })();

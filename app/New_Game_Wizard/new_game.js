@@ -6,9 +6,6 @@ angular
 var vm = this;
 vm.model = {};
 
-$scope.ViewTeams = function(model)  {
-    $state.go('Start.teamSelect', {model: model});
-};
 vm.fields = [
         {
             className: 'newGame animated bounceInRight',
@@ -22,9 +19,6 @@ vm.fields = [
                 $scope.Update = function() {
                     //removes the enter animation and adds the exit animation
                     angular.element('.newGame').removeClass('bounceInRight').addClass('bounceOutLeft');
-
-                $scope.model.panelTitle9 = "Owner Settings";
-                $scope.model.panelTitle10 = "Player Contract Settings";
             };
         },
         }

@@ -2,9 +2,11 @@
     'use strict';
 angular
 .module('routerApp')
-.controller('careerCtrl', function newGameCtrl() {
+.controller('careerCtrl', function careerCtrl($scope, $stateParams) {
 
 var vm = this;
+vm.model = $stateParams.model;
+console.log(vm.model);
 
 vm.careerLeague = [
     {
@@ -132,8 +134,6 @@ vm.careerLeague = [
                         label: 'Start with Fantasy Draft?',
                         toggle: 'Fant',
                         checked: false,
-                        align: '', //aligns the text label
-                        pull: ''  //aligns the toggle switch
                     },
                     controller: function($scope) {
                         $scope.Update = function(ischecked) {

@@ -122,12 +122,15 @@ function($stateProvider, $urlRouterProvider) {
         //nested Start states--url will be Start/profile
         .state('Start.career', {
             url: '/career',
+            pararms: {model: null},
             templateUrl: 'New_Game_Wizard/Start/Start-career.html',
             controller: 'careerCtrl',
             controllerAs: 'vm'
         })
+        
         .state('Start.career2', {
             url: '/career2',
+            params: {model: null},
             templateUrl: 'New_Game_Wizard/Start/Start-career2.html',
             controller: 'career2Ctrl',
             controllerAs: 'vm'
@@ -135,8 +138,12 @@ function($stateProvider, $urlRouterProvider) {
 
         .state('Start.career3', {
             url: '/career3',
-            templateUrl: 'New_Game_Wizard/Start/Start-career3.html'
+            params: {model: null},
+            templateUrl: 'New_Game_Wizard/Start/Start-career3.html',
+            controller: 'career3Ctrl',
+            controllerAs: 'vm'
         })
+
         //Team Selection screen
         .state('Start.teamSelect', {
             url: '/teamSelect',

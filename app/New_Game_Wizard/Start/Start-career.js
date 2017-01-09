@@ -264,7 +264,7 @@ vm.careerGameday = [
                     sliderOptions: {
                         value: 100,
                         floor: 0,
-                        ceil: 100,
+                        ceil: 200,
                         vertical: false,
                         showTicks: false
                     }

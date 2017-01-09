@@ -325,6 +325,7 @@ vm.careerFinancials = [
                 key: 'RookiePoolAmount',
                 className: 'flex-1',
                 type: 'vertSlider',
+                defaultValue: 6.00,
                 hideExpression: '!model.UseRookiePool',
                 templateOptions: {
                     label: 'Rookie Pool % of Cap',
@@ -357,6 +358,7 @@ vm.careerFinancials = [
             {
                 key: 'SalFloorPer',
                 className: 'flex-1',
+                defaultValue: 89,
                 hideExpression: '!model.SalaryFloor',
                 type: 'vertSlider',
                 templateOptions: {
@@ -382,6 +384,7 @@ vm.careerFinancials = [
                 },
                 className: 'flex-1',
                 type: 'vertSlider',
+                defaultValue: 100,
                 templateOptions: {
                     label: '% of cap when tax starts',
                     sliderOptions: {
@@ -438,6 +441,7 @@ vm.careerFinancials = [
             {
                 key: 'FranTagBasedWhatPer',
                 className: 'flex-1',
+                defaultValue: 5,
                 hideExpression: '!model.FranchiseTag',
                 type: 'vertSlider',
                 templateOptions: {
@@ -454,6 +458,7 @@ vm.careerFinancials = [
             {
                 key: 'FranMinRaise',
                 className: 'flex-1',
+                defaultValue: 120,
                 hideExpression: '!model.FranchiseTag',
                 type: 'vertSlider',
                 templateOptions: {
@@ -472,6 +477,7 @@ vm.careerFinancials = [
                 key: 'FranYearsPlayer',
                 hideExpression: '!model.FranchiseTag',
                 className: 'flex-1',
+                defaultValue: 2,
                 type: 'vertSlider',
                 templateOptions: {
                     label: '# Years Can Tag Same Player',
@@ -495,6 +501,7 @@ vm.careerFinancials = [
             {
                 key: 'TransTagPerc',
                 className: 'flex-1',
+                defaultValue: 10,
                 hideExpression: '!model.TransitionTag',
                 type: 'vertSlider',
                 templateOptions: {
